@@ -16,10 +16,6 @@ namespace Awale_Console
 		static string previousMove = "";
 		public static void Main (string[] args)
 		{
-			
-
-
-
 			int[] PlayerChoice = new int[4] ;
 			setTitle();
 			initialize ();
@@ -31,10 +27,8 @@ namespace Awale_Console
 				display ();
 				do {
 					PlayerChoice = ReadEntry ();
-				} while(true);
-				//} while(!isPlayable (PlayerChoice));
+				} while(!isPlayable (PlayerChoice));
 				Move (PlayerChoice);
-				game_end = isGameEnd ();
 				returnBoard ();
 				changeCurentPlayer ();
 				round++;
@@ -82,27 +76,52 @@ namespace Awale_Console
 		{
 			int token = Board [Choice [0], Choice [1]];
 			Board [Choice [0], Choice [1]] = 0;
-			bool Up = Choice [0] == 2;
-			bool Down = Choice [0] == 3;
-			bool clockWise = (Choice [2] == 1);
-			bool counterClockWise = (Choice [2] == 0);
+			bool Left = (Choice [2] == 0);
+			bool Right = !Left;
+			bool clockWise = (Choice [3] == 0);
+			bool counterClockWise = !clockWise;
 
 
 			int x=Choice[0], y=Choice[1];
-			if(seed > 0 && round >0)
+			if (seed > 0)
 			{
+				if (x == 2) 
+				{
+					if (Board [1, Choice [1]] > 0) 
+					{
+						
+						token += Board [1, Choice [1]];
+						Board [1, Choice [1]] = 0;
+					}
+
+				}
 				seed--;
 				token++;
+				if (y == 6 || y == 7 && x == 2)
+					disseminate (x, 7, token, Left, clockWise);
+				else
+					disseminate (x, y, token, Left, clockWise);
+			} 
+			else 
+			{
+
 			}
 
+
+		}
+
+
+		static void disseminate(int x, int y, int token,bool Left, bool clockWise)
+		{
+			bool counterClockWise = !clockWise;
 			while (token > 0) 
 			{
-				
+
 				if (clockWise) 
 				{
 					if (x == 2) 
 					{
-						
+
 						if (y == 7) 
 						{
 							x = 3;
@@ -118,13 +137,13 @@ namespace Awale_Console
 					} 
 					else if (x == 3) 
 					{
-						
+
 						if (y == 0) 
 						{	
 							x = 2;
 							Board [x, y]++;
 							token--;
-						
+
 						}
 						else 
 						{
@@ -173,18 +192,21 @@ namespace Awale_Console
 					}
 				}
 
-				if (token == 0 && x==2) 
+				if (token == 0) 
 				{
-					if(Board[1,y]>0)
+					if (x == 2) 
 					{
-						token += Board [1, y];
-						Board [1, y] = 0;
+						if (Board [1, y] > 0) 
+						{
+							token += Board [1, y];
+							Board [1, y] = 0;
+						}
 					}
 				}
 
 			}
-		}
 
+		}
 
 		static bool isPlayable(int[] Choice)
 		{
@@ -237,7 +259,7 @@ namespace Awale_Console
 				j=-1;
 				d=-1;
 				c=-1;
-				Console.WriteLine ("\n"+"Make a choice then press Enter key : ");
+				Console.WriteLine ("\n"+"Make a choice then press Enter key : [A:H] [1:4] {L,R} {C,U} ");
 				Choice = Console.ReadLine ();
 
 				try{	
@@ -307,7 +329,7 @@ namespace Awale_Console
 			}
 
 			
-			switch (Choice[2]) //choose the corner left or right
+			switch (Choice[2]) //choose the corner left or right (if possible)
 			{
 			case ('L'):
 				d = 0;
@@ -316,25 +338,34 @@ namespace Awale_Console
 			case ('R'):
 				d = 1;
 				break;
+
+			default:
+				d=-1;
+				break;
 			}
 
-			switch (Choice[3]) //choose wether you play offensive or defensive
+			switch (Choice[3]) //choose wether you play clockwise (C) or counter clockwise (U)
 			{
-			case ('O'):
+			case ('C'):
 				c = 0;
 				break;
 
-			case ('D'):
+			case ('U'):
 				c = 1;
+				break;
+			default:
+				c=-1;
 				break;
 			}
 				}
 				catch{
 					Console.WriteLine("error type (something) again !");
 				}
+
+        
 			}while(j==-1 || i ==-1 ||d==-1||c==-1);
 			previousMove = Choice;
-			return new int[4] {i,j,c,d};
+			return new int[4] {i,j,d,c};
 		}
 
 		static void changeCurentPlayer()
