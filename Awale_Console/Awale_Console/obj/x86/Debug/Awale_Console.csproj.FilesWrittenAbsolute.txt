@@ -1,0 +1,10 @@
+/home/farid/Documents/Projets/Unity/Awalé/Awale_Console_CSharp_Project/Awale_Console/Awale_Console/obj/x86/Debug/.NETFramework,Version=v4.5.AssemblyAttribute.cs
+/home/farid/Documents/Projets/Unity/Awalé/Awale_Console_CSharp_Project/Awale_Console/Awale_Console/bin/Debug/Awale_Console.pdb
+/home/farid/Documents/Projets/Unity/Awalé/Awale_Console_CSharp_Project/Awale_Console/Awale_Console/bin/Debug/Awale_Console.exe
+/home/farid/Documents/Projets/Unity/Awalé/Awale_Console_CSharp_Project/Awale_Console/Awale_Console/obj/x86/Debug/Awale_Console.exe
+/home/farid/Documents/Projets/Unity/Awalé/Awale_Console_CSharp_Project/Awale_Console/Awale_Console/obj/x86/Debug/Awale_Console.pdb
+/home/farid/Desktop/Awale_Console_CSharp_Project/Awale_Console/Awale_Console/obj/x86/Debug/.NETFramework,Version=v4.5.AssemblyAttribute.cs
+/home/farid/Desktop/Awale_Console_CSharp_Project/Awale_Console/Awale_Console/bin/Debug/Awale_Console.pdb
+/home/farid/Desktop/Awale_Console_CSharp_Project/Awale_Console/Awale_Console/bin/Debug/Awale_Console.exe
+/home/farid/Desktop/Awale_Console_CSharp_Project/Awale_Console/Awale_Console/obj/x86/Debug/Awale_Console.exe
+/home/farid/Desktop/Awale_Console_CSharp_Project/Awale_Console/Awale_Console/obj/x86/Debug/Awale_Console.pdb
