@@ -15,10 +15,12 @@ namespace Awale_Console
 		static bool game_end = false;
 		static int currentPlayer = 1;
 		static int round = 0;
+		static int token;
 		static string previousMove = "";
+		static int[] PlayerChoice = new int[4] ;
 		public static void Main (string[] args)
 		{
-			int[] PlayerChoice = new int[4] ;
+			
 			setTitle();
 			initialize ();
 
@@ -27,15 +29,11 @@ namespace Awale_Console
 				Console.Clear ();
 				Console.WriteLine ("       Awalé game");
 				display ();
-				do {
-					PlayerChoice = ReadEntry ();
-				} while(!isPlayable (PlayerChoice));
-				Move (PlayerChoice);
+				Move ();
 				returnBoard ();
 				changeCurentPlayer ();
 				round++;
 			}
-
 		}
 
 		static bool isGameEnd()
@@ -74,9 +72,12 @@ namespace Awale_Console
 			return state;
 		}
 
-		static void Move(int[] Choice)
+		static void Move()
 		{
-			int token = Board [Choice [0], Choice [1]];
+			string NewChoice;
+			int[] Choice = new int[4] ;
+			Choice = ReadEntry ();
+			token =   Board [Choice [0], Choice [1]];
 			Board [Choice [0], Choice [1]] = 0;
 			bool Left = (Choice [2] == 0);
 			bool Right = !Left;
@@ -104,9 +105,11 @@ namespace Awale_Console
 				else
 					disseminate (x, y, token, Left, clockWise);
 			} 
-			else 
+			else if(seed == 0 &&  x == 2)
 			{
-
+				Console.WriteLine ("\n"+"Make a choice then press Enter key : [A:H] [1:4] {L,R} {C,U} ");
+				//NewChoice = Console.ReadLine ();
+				Move ();
 			}
 
 
@@ -367,6 +370,7 @@ namespace Awale_Console
         
 			}while(j==-1 || i ==-1 ||d==-1||c==-1);
 			previousMove = Choice;
+			//playerChoice == 
 			return new int[4] {i,j,d,c};
 		}
 
