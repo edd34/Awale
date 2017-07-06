@@ -4,128 +4,128 @@ namespace Awale_Console
 {
 	public class Player
 	{
-		private string name;
-		private string previousMove = "";
-		public Player (string name)
+		public readonly string name;
+		//public int[] currentChoice = new int[4];
+		public Choice currentChoice;
+		public enum step 
 		{
+			UMUNIA,
+			UTEZA_NA_NDRAZI
+		}
+			
+		public struct Coord
+		{
+			public int X,Y;
 		}
 
-		static int[] ReadEntry()
+		public enum Direction
 		{
-			string Choice;
-			int i,j,d,c;
-			do{i=-1;
-				j=-1;
-				d=-1;
-				c=-1;
-				Console.WriteLine ("\n"+"Make a choice then press Enter key : [A:H] [1:4] {L,R} {C,U} ");
-				Choice = Console.ReadLine ();
+			ClockWise,CounterClockWise
+		}
 
-				try{	
+		public enum Corner
+		{
+			Left,Right
+		}
 
+		public struct Choice
+		{
+			public Coord coord;
+			public Direction direction;
+			public Corner corner;
 
-					switch (Choice[0]) {//choose the letter
-					case ('A'):
-						j = 0;
-						break;
+			public bool valid;
+		}
 
-					case ('B'):
-						j = 1;
-						break;
-
-					case ('C'):
-						j = 2;
-						break;
-
-					case ('D'):
-						j = 3;
-						break;
-
-					case ('E'):
-						j = 4;
-						break;
-
-					case ('F'):
-						j = 5;
-						break;
-
-					case ('G'):
-						j = 6;
-						break;
-
-					case ('H'):
-						j = 7;
-						break;
-
-					default:
-						j = -1;
-						break;
-					}
-
-
-
-					switch (Choice[1]) {//choose the number
-					case ('1'):
-						i = 0;
-						break;
-
-					case ('2'):
-						i = 1;
-						break;
-
-					case ('3'):
-						i = 2;
-						break;
-
-					case ('4'):
-						i = 3;
-						break;
-
-					default:
-						i = -1;
-						break;
-
-					}
-
-
-					switch (Choice[2]) //choose the corner left or right (if possible)
-					{
-					case ('L'):
-						d = 0;
-						break;
-
-					case ('R'):
-						d = 1;
-						break;
-
-					default:
-						d=-1;
-						break;
-					}
-
-					switch (Choice[3]) //choose wether you play clockwise (C) or counter clockwise (U)
-					{
-					case ('C'):
-						c = 0;
-						break;
-
-					case ('U'):
-						c = 1;
-						break;
-					default:
-						c=-1;
-						break;
-					}
+		public Player(string player)
+		{
+		//	Console.WriteLine ("Enter the name for "+player);
+		//	name = Console.ReadLine ();
+			name = player;
+		}
+			
+		public void ReadEntry(Board board)
+		{
+			board.previousMove = "";
+			var keyPressed = ConsoleKey.Spacebar;
+			char charPressed = '0';
+			////////////////
+			do {
+				
+				Console.WriteLine ("\nChoose a letter[A;H] and press entrer");
+				charPressed = Console.ReadKey(false).KeyChar;//it is a blocking statement
+				if(charPressed >= 'A' && charPressed <= 'H' )
+				{
+					this.currentChoice.valid = true;
+					this.currentChoice.coord.X = (int)charPressed-(int)'A';
 				}
-				catch{
-					Console.WriteLine("error type (something) again !");
+				else if(charPressed >= 'a' && charPressed <= 'h' ) 
+				{
+					this.currentChoice.coord.X = (int)charPressed-(int)'a';
+					this.currentChoice.valid = true;
+				}
+				else
+				{
+					this.currentChoice.valid = false;
 				}
 
+			} while(!this.currentChoice.valid);
+			board.previousMove += charPressed;
+			/////////////////
+			do {
+			this.currentChoice.valid = false;
+				Console.WriteLine ("\nChoose a cifer [1;4] and press entrer");
+				charPressed = Console.ReadKey(false).KeyChar;//it is a blocking statement
+				if(charPressed >= '1' && charPressed <= '4' )
+					{
+					this.currentChoice.valid = true;
+					this.currentChoice.coord.Y = (int)charPressed - (int)'1';
+					}
+				else
+					this.currentChoice.valid = false;
 
-			}while(j==-1 || i ==-1 ||d==-1||c==-1);
-			previousMove = Choice;
-			//playerChoice == 
-			return new int[4] {i,j,d,c};
+			} while(!this.currentChoice.valid);
+			board.previousMove += charPressed;
+			/////////////////////////////
+			do {
+				this.currentChoice.valid = false;
+				Console.WriteLine ("\nChoose the corner with arrow left or right");
+				keyPressed = Console.ReadKey(false).Key;//it is a blocking statement
+				if(keyPressed == ConsoleKey.LeftArrow )
+				{
+					this.currentChoice.valid = true;
+					this.currentChoice.corner = Corner.Left;
+				}
+				else if(keyPressed == ConsoleKey.RightArrow )
+				{
+					this.currentChoice.valid = true;
+					this.currentChoice.corner = Corner.Right;
+				}
+				else
+					this.currentChoice.valid = false;
+
+			} while(!this.currentChoice.valid);
+			/////////////////////////////////////
+			board.previousMove += this.currentChoice.corner;
+			do {
+				this.currentChoice.valid = false;
+				Console.WriteLine ("\nChoose the direction (clockWise or counterClockWise) with the arrow");
+				keyPressed = Console.ReadKey(false).Key;//it is a blocking statement
+				if(keyPressed == ConsoleKey.LeftArrow )
+				{
+					this.currentChoice.valid = true;
+					this.currentChoice.direction = Direction.CounterClockWise;
+				}
+				else if(keyPressed == ConsoleKey.RightArrow )
+				{
+					this.currentChoice.valid = true;
+					this.currentChoice.direction = Direction.ClockWise;
+				}
+				else
+					this.currentChoice.valid = false;
+
+			} while(!this.currentChoice.valid);
+			board.previousMove += this.currentChoice.direction;
 		}
 	}
 }

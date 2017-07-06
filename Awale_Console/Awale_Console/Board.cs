@@ -4,14 +4,14 @@ namespace Awale_Console
 {
 	public class Board
 	{
-		static int seed = 64;
-		static int [,] checkerBoard = new int[4,8];
-		static bool game_end = false;
-		static int currentPlayer = 1;
-		static int round = 0;
-		static int token;
+		public int seed = 64;
+		public int [,] checkerBoard = new int[4,8];
+		public bool game_end = false;
+		public int currentPlayer = 1;
+		public int round = 1;
+		public int token;
+		public string previousMove = "";
 
-		static int[] PlayerChoice = new int[4] ;
 
 
 		public Board ()
@@ -20,66 +20,118 @@ namespace Awale_Console
 			game_end = false;
 		}
 
-		static void initialize()//in order to initialize the first round
+		public void initialize()//in order to initialize the first round
 		{
 			for (int i = 0; i < 4; i++) {
 				for (int j = 0; j < 8; j++) 
 				{
-					Board [i, j] = 0;
+					checkerBoard [i, j] = 0;
 				}
 			}
-			Board [1, 3] = 6;
-			Board [1, 2] = 2;
-			Board [1, 1] = 2;
-			Board [2, 4] = 6;
-			Board [2, 5] = 2;
-			Board [2, 6] = 2;
+			checkerBoard [1, 3] = 6;
+			checkerBoard [1, 2] = 2;
+			checkerBoard [1, 1] = 2;
+			checkerBoard [2, 4] = 6;
+			checkerBoard [2, 5] = 2;
+			checkerBoard [2, 6] = 2;
 			seed = 44;
 		}
 
-		static void display()//main display fonction for each round
+
+
+		public void display(Player currentPlayer,GameManager.step state)//main display fonction for each round
 		{
 
+			Console.Clear ();
 			Console.WriteLine ();
 			Console.WriteLine ();
-			Console.Write ("    A  B  C  D  E  F  G  H");
+			Console.Write ("     A   B   C   D   E   F   G   H");
 			Console.WriteLine ();
-			Console.WriteLine ("--------------------------------");
+			Console.WriteLine (" ----------------------------------------");
 
 			for(int i = 0; i < 4 ; i++)
 			{
 				for (int j = 0; j < 10; j++) 
 				{
 					if (j == 0)
-						Console.Write ((i+1) + " | ");
+						Console.Write (" "+(i+1) + " | ");
 					else if(j==9)
 						Console.Write ("| " + (i+1));
 					else 
 
-						Console.Write (Board [i, j-1] + "  ");
+						Console.Write (this.checkerBoard [i, j-1].ToString("##00") + "  ");
 
 				}
 				if (i == 1) {
 					Console.WriteLine ();
-					Console.WriteLine ("--------------------------------  seed = "+seed);
+					Console.WriteLine (" ----------------------------------------  seed = "+seed);
 				} else {
 					Console.WriteLine ();
 				}
 
 
 			}
-			Console.WriteLine ("--------------------------------");
-			Console.Write ("    A  B  C  D  E  F  G  H");
+				Console.WriteLine (" ----------------------------------------");
+			Console.Write ("     A   B   C   D   E   F   G   H");
 			Console.WriteLine ();
 			Console.WriteLine ();
-			Console.WriteLine ("    Player : " + currentPlayer + "    Round : " + round);
-			if (round > 0)
-				Console.WriteLine ("Previous move = "+previousMove);
-			else
+			Console.WriteLine ("    Player : " + currentPlayer.name + "  |  Round : " + round + "  |  Step : "+state);
+			if (round == 1)
 				Console.WriteLine ();
+			else
+				Console.WriteLine ("Previous move = "+this.previousMove);
+
 
 		}
 
+		public bool isPlayable(Player.Choice currentChoice)
+		{
+
+			bool ret;
+			if(Choice[0]==0 || Choice[0]==1)
+				ret = false;	
+			else if (round == 1  || round == 2)
+			{
+				if (Choice [0] == 2 && Choice [1] == 4 || this.checkerBoard [Choice [0], Choice [1]] == 0) {
+					ret = false;
+				} else
+					ret = true;
+
+			}
+			else
+			{
+				if (this.checkerBoard [Choice [0], Choice [1]] > 0)
+					ret = true;
+				else
+					ret = false;
+			}
+			return ret;
+		}
+
+		public void returnBoard()
+		{
+			int [,] Board2 = new int[4,8];
+			for (int i = 0; i < 4; i++) {
+				for (int j = 0; j < 8; j++) 
+				{
+					Board2 [3-i, 7-j] = this.checkerBoard[i,j];
+				}
+			}
+
+			for (int i = 0; i < 4; i++) {
+				for (int j = 0; j < 8; j++) 
+				{
+					this.checkerBoard [i, j] = Board2[i,j];
+				}
+			}
+		}
+
+		public void capture(Player currentPlayer)
+		{
+			//if(checkerBoard[ currentPlayer.currentChoice[0],
+		}
+
+		/*
 		static void disseminate(int x, int y, int token,bool Left, bool clockWise)
 		{
 			bool counterClockWise = !clockWise;
@@ -176,48 +228,51 @@ namespace Awale_Console
 			}
 
 		}
-
-		static bool isPlayable(int[] Choice)
+		/*
+		static void Move()
 		{
+			string NewChoice;
+			int[] Choice = new int[4] ;
+			Choice = ReadEntry ();
+			token =   Board [Choice [0], Choice [1]];
+			Board [Choice [0], Choice [1]] = 0;
+			bool Left = (Choice [2] == 0);
+			bool Right = !Left;
+			bool clockWise = (Choice [3] == 0);
+			bool counterClockWise = !clockWise;
 
-			bool ret;
-			if(Choice[0]==0 || Choice[0]==1)
-				ret = false;	
-			else if (round == 0  || round == 1)
-			{
-				if (Choice [0] == 2 && Choice [1] == 4 || Board [Choice [0], Choice [1]] == 0) {
-					ret = false;
-				} else
-					ret = true;
 
-			}
-			else
+			int x=Choice[0], y=Choice[1];
+			if (seed > 0)
 			{
-				if (Board [Choice [0], Choice [1]] > 0)
-					ret = true;
+				if (x == 2) 
+				{
+					if (Board [1, Choice [1]] > 0) 
+					{
+
+						token += Board [1, Choice [1]];
+						Board [1, Choice [1]] = 0;
+					}
+
+				}
+				seed--;
+				token++;
+				if (y == 6 || y == 7 && x == 2)
+					disseminate (x, 7, token, Left, clockWise);
 				else
-					ret = false;
-			}
-			return ret;
-		}
-
-		static void returnBoard()
-		{
-			int [,] Board2 = new int[4,8];
-			for (int i = 0; i < 4; i++) {
-				for (int j = 0; j < 8; j++) 
-				{
-					Board2 [3-i, 7-j] = Board[i,j];
-				}
+					disseminate (x, y, token, Left, clockWise);
+			} 
+			else if(seed == 0 &&  x == 2)
+			{
+				Console.WriteLine ("\n"+"Make a choice then press Enter key : [A:H] [1:4] {L,R} {C,U} ");
+				//NewChoice = Console.ReadLine ();
+				Move ();
 			}
 
-			for (int i = 0; i < 4; i++) {
-				for (int j = 0; j < 8; j++) 
-				{
-					Board [i, j] = Board2[i,j];
-				}
-			}
+
 		}
+*/
+
 	}
 }
 
