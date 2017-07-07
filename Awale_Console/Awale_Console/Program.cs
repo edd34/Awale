@@ -14,6 +14,7 @@ namespace Awale_Console
 			
 
 			GameManager gameManager = new GameManager ();
+
 			Board board = new Board ();
 			Player player_1 = new Player ("Player 1");
 			Player player_2 = new Player ("Player 2");
@@ -25,19 +26,63 @@ namespace Awale_Console
 			while (!board.game_end) 
 			{
 				
-				//Console.Clear ();
+				Console.Clear ();
 				board.display (currentPlayer,gameManager.state);
-				currentPlayer.ReadEntry (board,gameManager);
-				if(board.isCapturePossible(currentPlayer.currentChoice))
-				{
+				currentPlayer.ReadCoord (board);
+				board.move (gameManager, currentPlayer.currentChoice);
+				if (board.isCapturePossible (currentPlayer.currentChoice)) {
 					currentPlayer.takeAllOpponentsSeeds (board, currentPlayer.currentChoice);
 
-					if(board.spreadNyumba(board,currentPlayer))
-						currentPlayer.takeAllMySeeds (board, currentPlayer.currentChoice);
+					if (board.isNyumba (currentPlayer.currentChoice)) {
+						if (board.askToSpreadNyumba (board, currentPlayer) == true) {
+							currentPlayer.takeAllMySeeds (board, currentPlayer.currentChoice);
+						}
+					} 
+
+
+
+					board.hasCaptured = true;
+				} 
+				else 
+				{
+					currentPlayer.takeAllMySeeds (board, currentPlayer.currentChoice);
+					board.hasCaptured = false;
 				}
+
+				if (board.hasCaptured == true) 
+				{	
+					currentPlayer.ReadCornerDirection (board);
+					if (currentPlayer.currentChoice.corner == Player.Corner.Left) 
+					{
+						if (currentPlayer.currentChoice.direction == Player.Direction.ClockWise) 
+						{
+							currentPlayer.currentChoice.coord.X = 3;
+							currentPlayer.currentChoice.coord.Y = 0;
+						} 
+						else if (currentPlayer.currentChoice.direction == Player.Direction.CounterClockWise) 
+						{
+							currentPlayer.currentChoice.coord.X = 2;
+							currentPlayer.currentChoice.coord.Y = 1;
+						}
+
+					} 
+					else if (currentPlayer.currentChoice.corner == Player.Corner.Right) 
+					{
+						if (currentPlayer.currentChoice.direction == Player.Direction.ClockWise) 
+						{
+							currentPlayer.currentChoice.coord.X = 2;
+							currentPlayer.currentChoice.coord.Y = 6;
+						} 
+						else if (currentPlayer.currentChoice.direction == Player.Direction.CounterClockWise) 
+						{
+							currentPlayer.currentChoice.coord.X = 3;
+							currentPlayer.currentChoice.coord.Y = 7;
+						}
+
+					} 
+				} 
+
 				board.disseminate (currentPlayer.currentChoice);
-				//board.display (currentPlayer,gameManager.state);
-				//Console.ReadLine ();
 				board.returnBoard ();
 
 
@@ -45,19 +90,6 @@ namespace Awale_Console
 				otherPlayer = (currentPlayer == player_1) ? player_2 : player_1;
 				gameManager.update_Step_Round (board);
 			}
-			/*setTitle();
-			initialize ();
-
-			while (game_end == false)
-			{
-				Console.Clear ();
-				Console.WriteLine ("       Awalé game");
-				display ();
-				Move ();
-				returnBoard ();
-				changeCurentPlayer ();
-				round++;
-			}*/
 		}
 
 	}

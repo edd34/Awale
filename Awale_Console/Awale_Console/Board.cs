@@ -11,6 +11,7 @@ namespace Awale_Console
 		public int round = 1;
 		public int token;
 		public string previousMove = "";
+		public bool hasCaptured =false;
 
 
 
@@ -127,20 +128,17 @@ namespace Awale_Console
 			}
 		}
 
-		public bool capture(Player.Choice currentChoice)
+		public void capture(Player.Choice currentChoice)
 		{
-			if (currentChoice.coord.X == 2) 
-			{
-				if (this.checkerBoard [currentChoice.coord.X - 1, currentChoice.coord.Y] > 0) 
-				{
+			this.hasCaptured = false;
+			if (currentChoice.coord.X == 2) {
+				if (this.checkerBoard [currentChoice.coord.X - 1, currentChoice.coord.Y] > 0) {
 				
 					this.token += this.checkerBoard [currentChoice.coord.X - 1, currentChoice.coord.Y];
 					this.checkerBoard [currentChoice.coord.X - 1, currentChoice.coord.Y] = 0;
-					return true;
-				} else
-					return false;
-			} else
-				return false;
+					this.hasCaptured = true;
+				} 
+			}
 		}
 
 		public bool isCapturePossible(Player.Choice currentChoice)
@@ -233,78 +231,40 @@ namespace Awale_Console
 
 					}
 				}
-
-				/*if (token == 0) 
-				{
-					this.capture (currentChoice);
-				}*/
-
 			}
 
 		}
 
-		public bool spreadNyumba(Board board, Player currentPlayer)
+		public void move(GameManager gameManager, Player.Choice currentChoice)
 		{
+			if (gameManager.state == GameManager.step.UMUNIA) {
+				this.seed--;
+				this.checkerBoard [currentChoice.coord.X, currentChoice.coord.Y]++;
+			} else {
+
+			}
+		}
+
+		public bool isNyumba(Player.Choice currentChoice)
+		{
+			return currentChoice.coord.X == 2 &&  currentChoice.coord.Y == 4;
+		}
+
+		public bool askToSpreadNyumba(Board board, Player currentPlayer)
+		{
+			bool value = false;
 			ConsoleKey keyPressed;
-			if (currentPlayer.currentChoice.coord.X == 2 && currentPlayer.currentChoice.coord.Y == 4) {	
 				do {
 					Console.WriteLine ("This is the nyumba, do you want tp spread it ? (Y/N)");
 					keyPressed = Console.ReadKey (false).Key;
-					if (keyPressed == ConsoleKey.Y) {
-						return true;
-					} else if (Console.ReadKey (false).Key == ConsoleKey.N) {
-						return false;
-					}
-					else
-						return false;
-				} while(keyPressed != ConsoleKey.Y || keyPressed != ConsoleKey.N);
-			} else
-				return false;
+					if (keyPressed == ConsoleKey.Y) 
+						value = true;
+				 else if (keyPressed == ConsoleKey.N) 
+						value = false;
+			} while(!(keyPressed == ConsoleKey.Y || keyPressed == ConsoleKey.N));
+			return value;
 		}
-		/*
-		static void Move()
-		{
-			string NewChoice;
-			int[] Choice = new int[4] ;
-			Choice = ReadEntry ();
-			token =   Board [Choice [0], Choice [1]];
-			Board [Choice [0], Choice [1]] = 0;
-			bool Left = (Choice [2] == 0);
-			bool Right = !Left;
-			bool clockWise = (Choice [3] == 0);
-			bool counterClockWise = !clockWise;
 
-
-			int x=Choice[0], y=Choice[1];
-			if (seed > 0)
-			{
-				if (x == 2) 
-				{
-					if (Board [1, Choice [1]] > 0) 
-					{
-
-						token += Board [1, Choice [1]];
-						Board [1, Choice [1]] = 0;
-					}
-
-				}
-				seed--;
-				token++;
-				if (y == 6 || y == 7 && x == 2)
-					disseminate (x, 7, token, Left, clockWise);
-				else
-					disseminate (x, y, token, Left, clockWise);
-			} 
-			else if(seed == 0 &&  x == 2)
-			{
-				Console.WriteLine ("\n"+"Make a choice then press Enter key : [A:H] [1:4] {L,R} {C,U} ");
-				//NewChoice = Console.ReadLine ();
-				Move ();
-			}
-
-
-		}
-*/
 
 	}
 }

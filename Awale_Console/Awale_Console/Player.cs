@@ -45,49 +45,11 @@ namespace Awale_Console
 			name = player;
 		}
 			
-		public void ReadEntry(Board board,GameManager gameManager)
+		public void ReadCornerDirection(Board board)
 		{
 			board.previousMove = "";
-			var keyPressed = ConsoleKey.Spacebar;
-			char charPressed = '0';
+			ConsoleKey keyPressed = ConsoleKey.Spacebar;
 			////////////////
-			do {
-				
-				Console.WriteLine ("\nChoose a letter[A;H] and press entrer");
-				charPressed = Console.ReadKey(false).KeyChar;//it is a blocking statement
-				if(charPressed >= 'A' && charPressed <= 'H' )
-				{
-					this.currentChoice.valid = true;
-					this.currentChoice.coord.Y = (int)charPressed-(int)'A';
-				}
-				else if(charPressed >= 'a' && charPressed <= 'h' ) 
-				{
-					this.currentChoice.coord.Y = (int)charPressed-(int)'a';
-					this.currentChoice.valid = true;
-				}
-				else
-				{
-					this.currentChoice.valid = false;
-				}
-
-			} while(!this.currentChoice.valid);
-			board.previousMove += " "+ charPressed;
-			/////////////////
-			do {
-			this.currentChoice.valid = false;
-				Console.WriteLine ("\nChoose a cifer [1;4] and press entrer");
-				charPressed = Console.ReadKey(false).KeyChar;//it is a blocking statement
-				if(charPressed >= '1' && charPressed <= '4' )
-					{
-					this.currentChoice.valid = true;
-					this.currentChoice.coord.X = (int)charPressed - (int)'1';
-					}
-				else
-					this.currentChoice.valid = false;
-
-			} while(!this.currentChoice.valid);
-			board.previousMove +=" "+ charPressed;
-			/////////////////////////////
 			do {
 				this.currentChoice.valid = false;
 				Console.WriteLine ("\nChoose the corner with arrow left or right");
@@ -125,13 +87,75 @@ namespace Awale_Console
 
 			} while(!this.currentChoice.valid);
 			board.previousMove +=" direction = " +this.currentChoice.direction;
-			if (gameManager.state == GameManager.step.UMUNIA) {
-				board.seed--;
-				board.token++;
-			} else {
-
-			}
 		}
+
+		public void ReadCoord(Board board)
+		{
+			board.previousMove = "";
+			var keyPressed = ConsoleKey.Spacebar;
+			char charPressed = '0';
+			////////////////
+			do {
+
+				Console.WriteLine ("\nChoose a letter[A;H] and press entrer");
+				charPressed = Console.ReadKey(false).KeyChar;//it is a blocking statement
+				if(charPressed >= 'A' && charPressed <= 'H' )
+				{
+					this.currentChoice.valid = true;
+					this.currentChoice.coord.Y = (int)charPressed-(int)'A';
+				}
+				else if(charPressed >= 'a' && charPressed <= 'h' ) 
+				{
+					this.currentChoice.coord.Y = (int)charPressed-(int)'a';
+					this.currentChoice.valid = true;
+				}
+				else
+				{
+					this.currentChoice.valid = false;
+				}
+
+			} while(!this.currentChoice.valid);
+			board.previousMove += " "+ charPressed;
+			/////////////////
+			do {
+				this.currentChoice.valid = false;
+				Console.WriteLine ("\nChoose a cifer [1;4] and press entrer");
+				charPressed = Console.ReadKey(false).KeyChar;//it is a blocking statement
+				if(charPressed >= '1' && charPressed <= '4' )
+				{
+					this.currentChoice.valid = true;
+					this.currentChoice.coord.X = (int)charPressed - (int)'1';
+				}
+				else
+					this.currentChoice.valid = false;
+
+			} while(!this.currentChoice.valid);
+			board.previousMove +=" "+ charPressed;
+			/////////////////////////////
+			board.previousMove +=" corner = "+ this.currentChoice.corner;
+			do {
+				this.currentChoice.valid = false;
+				Console.WriteLine ("\nChoose the direction (clockWise or counterClockWise) with the arrow");
+				keyPressed = Console.ReadKey(false).Key;//it is a blocking statement
+				if(keyPressed == ConsoleKey.LeftArrow )
+				{
+					this.currentChoice.valid = true;
+					this.currentChoice.direction = Direction.CounterClockWise;
+				}
+				else if(keyPressed == ConsoleKey.RightArrow )
+				{
+					this.currentChoice.valid = true;
+					this.currentChoice.direction = Direction.ClockWise;
+				}
+				else
+					this.currentChoice.valid = false;
+
+			} while(!this.currentChoice.valid);
+			board.previousMove +=" direction = " +this.currentChoice.direction;
+
+		}
+
+
 
 		public void takeAllMySeeds(Board board,Player.Choice currentChoice)
 		{
@@ -141,9 +165,10 @@ namespace Awale_Console
 
 		public void takeAllOpponentsSeeds(Board board,Player.Choice currentChoice)
 		{
-			if (currentChoice.coord.X == 2) {
+			if (currentChoice.coord.X == 2) 
+			{
 				board.token += board.checkerBoard [currentChoice.coord.X - 1, currentChoice.coord.Y];
-				board.checkerBoard [currentChoice.coord.X, currentChoice.coord.Y] = 0;
+				board.checkerBoard [currentChoice.coord.X-1, currentChoice.coord.Y] = 0;
 			}
 		}
 
