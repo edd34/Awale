@@ -42,7 +42,7 @@ namespace Awale_Console
 		public void display(Player currentPlayer,GameManager.step state)//main display fonction for each round
 		{
 
-			Console.Clear ();
+			//Console.Clear ();
 			Console.WriteLine ();
 			Console.WriteLine ();
 			Console.Write ("     A   B   C   D   E   F   G   H");
@@ -88,11 +88,12 @@ namespace Awale_Console
 		{
 
 			bool ret;
-			if(Choice[0]==0 || Choice[0]==1)
+			if(this.checkerBoard[currentChoice.coord.X,currentChoice.coord.Y]==0)
 				ret = false;	
 			else if (round == 1  || round == 2)
 			{
-				if (Choice [0] == 2 && Choice [1] == 4 || this.checkerBoard [Choice [0], Choice [1]] == 0) {
+				if (currentChoice.coord.X== 2 && currentChoice.coord.Y == 4 || 
+					this.checkerBoard[currentChoice.coord.X,currentChoice.coord.Y]== 0) {
 					ret = false;
 				} else
 					ret = true;
@@ -100,7 +101,7 @@ namespace Awale_Console
 			}
 			else
 			{
-				if (this.checkerBoard [Choice [0], Choice [1]] > 0)
+				if (this.checkerBoard[currentChoice.coord.X,currentChoice.coord.Y]> 0)
 					ret = true;
 				else
 					ret = false;
@@ -126,86 +127,106 @@ namespace Awale_Console
 			}
 		}
 
-		public void capture(Player currentPlayer)
+		public bool capture(Player.Choice currentChoice)
 		{
-			//if(checkerBoard[ currentPlayer.currentChoice[0],
+			if (currentChoice.coord.X == 2) 
+			{
+				if (this.checkerBoard [currentChoice.coord.X - 1, currentChoice.coord.Y] > 0) 
+				{
+				
+					this.token += this.checkerBoard [currentChoice.coord.X - 1, currentChoice.coord.Y];
+					this.checkerBoard [currentChoice.coord.X - 1, currentChoice.coord.Y] = 0;
+					return true;
+				} else
+					return false;
+			} else
+				return false;
 		}
 
-		/*
-		static void disseminate(int x, int y, int token,bool Left, bool clockWise)
+		public bool isCapturePossible(Player.Choice currentChoice)
 		{
-			bool counterClockWise = !clockWise;
-			while (token > 0) 
+			if (currentChoice.coord.X == 2) {
+				if (this.checkerBoard [currentChoice.coord.X - 1, currentChoice.coord.Y] > 0) {
+					return true;
+				} else
+					return false;
+			} else
+				return false;
+		}
+
+
+		public void disseminate(Player.Choice currentChoice)
+		{
+			while (this.token > 0) 
 			{
 
-				if (clockWise) 
+				if (currentChoice.direction == Player.Direction.ClockWise) 
 				{
-					if (x == 2) 
+					if (currentChoice.coord.X == 2) 
 					{
 
-						if (y == 7) 
+						if (currentChoice.coord.Y == 7) 
 						{
-							x = 3;
-							Board [x, y]++;
-							token--;
+							currentChoice.coord.X = 3;
+							this.checkerBoard [currentChoice.coord.X, currentChoice.coord.Y] ++;
+							this.token--;
 						}
 						else 
 						{
-							y++;
-							Board [x, y]++;
-							token--;
+							currentChoice.coord.Y++;
+							this.checkerBoard [currentChoice.coord.X, currentChoice.coord.Y] ++;
+							this.token--;
 						}
 					} 
-					else if (x == 3) 
+					else if(currentChoice.coord.X == 3) 
 					{
 
-						if (y == 0) 
+						if (currentChoice.coord.Y == 0) 
 						{	
-							x = 2;
-							Board [x, y]++;
-							token--;
+							currentChoice.coord.X = 2;
+							this.checkerBoard [currentChoice.coord.X, currentChoice.coord.Y] ++;
+							this.token--;
 
 						}
 						else 
 						{
-							y--;
-							Board [x, y]++;
-							token--;
+							currentChoice.coord.Y--;
+							this.checkerBoard [currentChoice.coord.X, currentChoice.coord.Y] ++;
+							this.token--;
 						}
-
 					}
 				} 
-				else if (counterClockWise) 
+				else if (currentChoice.direction == Player.Direction.CounterClockWise) 
 				{
-					if (x == 2) 
+					if (currentChoice.coord.X == 2) 
 					{
 
-						if (y == 0) 
+						if (currentChoice.coord.Y == 0) 
 						{
-							x = 3;
-							Board [x, y]++;
-							token--;
+							currentChoice.coord.X = 3;
+							this.checkerBoard [currentChoice.coord.X, currentChoice.coord.Y] ++;
+							this.token--;
 						}
 						else 
 						{
-							y--;
-							Board [x, y]++;
-							token--;
+							currentChoice.coord.Y--;
+							this.checkerBoard[currentChoice.coord.X, currentChoice.coord.Y] ++;
+							this.token--;
 						}
 					} 
-					else if (x == 3) 
+					else if (currentChoice.coord.X == 3) 
 					{
 
-						if (y == 7) 
+						if (currentChoice.coord.Y == 7) 
 						{	
-							x = 2;
-							Board [x, y]++;
-							token--;
+							currentChoice.coord.X = 2;
+							this.checkerBoard [currentChoice.coord.X, currentChoice.coord.Y] ++;
+							this.token--;
 						}
 						else 
 						{
-							y++;
-							Board [x, y]++;
+							currentChoice.coord.Y++;
+							this.checkerBoard [currentChoice.coord.X, currentChoice.coord.Y] ++;
 							token--;
 
 						}
@@ -213,20 +234,32 @@ namespace Awale_Console
 					}
 				}
 
-				if (token == 0) 
+				/*if (token == 0) 
 				{
-					if (x == 2) 
-					{
-						if (Board [1, y] > 0) 
-						{
-							token += Board [1, y];
-							Board [1, y] = 0;
-						}
-					}
-				}
+					this.capture (currentChoice);
+				}*/
 
 			}
 
+		}
+
+		public bool spreadNyumba(Board board, Player currentPlayer)
+		{
+			ConsoleKey keyPressed;
+			if (currentPlayer.currentChoice.coord.X == 2 && currentPlayer.currentChoice.coord.Y == 4) {	
+				do {
+					Console.WriteLine ("This is the nyumba, do you want tp spread it ? (Y/N)");
+					keyPressed = Console.ReadKey (false).Key;
+					if (keyPressed == ConsoleKey.Y) {
+						return true;
+					} else if (Console.ReadKey (false).Key == ConsoleKey.N) {
+						return false;
+					}
+					else
+						return false;
+				} while(keyPressed != ConsoleKey.Y || keyPressed != ConsoleKey.N);
+			} else
+				return false;
 		}
 		/*
 		static void Move()

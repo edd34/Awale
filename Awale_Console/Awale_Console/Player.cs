@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics;
 
 namespace Awale_Console
 {
@@ -44,7 +45,7 @@ namespace Awale_Console
 			name = player;
 		}
 			
-		public void ReadEntry(Board board)
+		public void ReadEntry(Board board,GameManager gameManager)
 		{
 			board.previousMove = "";
 			var keyPressed = ConsoleKey.Spacebar;
@@ -57,11 +58,11 @@ namespace Awale_Console
 				if(charPressed >= 'A' && charPressed <= 'H' )
 				{
 					this.currentChoice.valid = true;
-					this.currentChoice.coord.X = (int)charPressed-(int)'A';
+					this.currentChoice.coord.Y = (int)charPressed-(int)'A';
 				}
 				else if(charPressed >= 'a' && charPressed <= 'h' ) 
 				{
-					this.currentChoice.coord.X = (int)charPressed-(int)'a';
+					this.currentChoice.coord.Y = (int)charPressed-(int)'a';
 					this.currentChoice.valid = true;
 				}
 				else
@@ -70,7 +71,7 @@ namespace Awale_Console
 				}
 
 			} while(!this.currentChoice.valid);
-			board.previousMove += charPressed;
+			board.previousMove += " "+ charPressed;
 			/////////////////
 			do {
 			this.currentChoice.valid = false;
@@ -79,34 +80,32 @@ namespace Awale_Console
 				if(charPressed >= '1' && charPressed <= '4' )
 					{
 					this.currentChoice.valid = true;
-					this.currentChoice.coord.Y = (int)charPressed - (int)'1';
+					this.currentChoice.coord.X = (int)charPressed - (int)'1';
 					}
 				else
 					this.currentChoice.valid = false;
 
 			} while(!this.currentChoice.valid);
-			board.previousMove += charPressed;
+			board.previousMove +=" "+ charPressed;
 			/////////////////////////////
 			do {
 				this.currentChoice.valid = false;
 				Console.WriteLine ("\nChoose the corner with arrow left or right");
 				keyPressed = Console.ReadKey(false).Key;//it is a blocking statement
-				if(keyPressed == ConsoleKey.LeftArrow )
-				{
-					this.currentChoice.valid = true;
-					this.currentChoice.corner = Corner.Left;
-				}
-				else if(keyPressed == ConsoleKey.RightArrow )
+				if(keyPressed == ConsoleKey.RightArrow)
 				{
 					this.currentChoice.valid = true;
 					this.currentChoice.corner = Corner.Right;
 				}
+				else if(keyPressed == ConsoleKey.LeftArrow){
+					this.currentChoice.valid = true;
+					this.currentChoice.corner = Corner.Left;
+				}
 				else
 					this.currentChoice.valid = false;
-
-			} while(!this.currentChoice.valid);
+			}while(!this.currentChoice.valid);
 			/////////////////////////////////////
-			board.previousMove += this.currentChoice.corner;
+			board.previousMove +=" corner = "+ this.currentChoice.corner;
 			do {
 				this.currentChoice.valid = false;
 				Console.WriteLine ("\nChoose the direction (clockWise or counterClockWise) with the arrow");
@@ -125,8 +124,29 @@ namespace Awale_Console
 					this.currentChoice.valid = false;
 
 			} while(!this.currentChoice.valid);
-			board.previousMove += this.currentChoice.direction;
+			board.previousMove +=" direction = " +this.currentChoice.direction;
+			if (gameManager.state == GameManager.step.UMUNIA) {
+				board.seed--;
+				board.token++;
+			} else {
+
+			}
 		}
+
+		public void takeAllMySeeds(Board board,Player.Choice currentChoice)
+		{
+			board.token += board.checkerBoard [currentChoice.coord.X, currentChoice.coord.Y];
+			board.checkerBoard [currentChoice.coord.X, currentChoice.coord.Y] = 0;
+		}
+
+		public void takeAllOpponentsSeeds(Board board,Player.Choice currentChoice)
+		{
+			if (currentChoice.coord.X == 2) {
+				board.token += board.checkerBoard [currentChoice.coord.X - 1, currentChoice.coord.Y];
+				board.checkerBoard [currentChoice.coord.X, currentChoice.coord.Y] = 0;
+			}
+		}
+
 	}
 }
 

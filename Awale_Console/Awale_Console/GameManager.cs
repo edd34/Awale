@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics;
 
 namespace Awale_Console
 {
@@ -13,8 +14,9 @@ namespace Awale_Console
 
 		public step state = step.UMUNIA;
 
-		public void updateStep(Board board)
+		public void update_Step_Round(Board board)
 		{
+			board.round++;
 			if (board.seed > 0) 
 				state = step.UMUNIA;
 			else
