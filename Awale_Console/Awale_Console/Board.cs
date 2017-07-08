@@ -215,11 +215,13 @@ namespace Awale_Console
         }
 
 
-        public void disseminate(Player.Choice currentChoice)
+        public void disseminate(Player.Choice currentChoice, Player currentPlayer)
         {
+
+
             while (this.token > 0)
             {
-
+                
                 if (currentChoice.direction == Player.Direction.ClockWise)
                 {
                     if (currentChoice.coord.X == 2)
@@ -293,6 +295,21 @@ namespace Awale_Console
 
                     }
                 }
+                if(this.token == 1)
+                {
+                    if(this.checkerBoard[currentChoice.coord.X, currentChoice.coord.Y]>0)
+                    {
+                        if(this.isCapturePossible(currentChoice))
+                        {
+                            this.capture(currentPlayer, this);
+                        }
+                        else
+                        {
+                            currentPlayer.takeAllMySeeds(this, currentChoice);
+                        }
+                    }
+                }
+               
             }
 
         }

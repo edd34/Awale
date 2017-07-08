@@ -33,7 +33,7 @@ namespace Awale_Console
 				board.move (gameManager, currentPlayer.currentChoice);
                 board.capture(currentPlayer,board);
 
-				board.disseminate (currentPlayer.currentChoice);
+                board.disseminate (currentPlayer.currentChoice,currentPlayer);
 				board.returnBoard ();
 
 
