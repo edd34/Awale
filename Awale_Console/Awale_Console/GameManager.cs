@@ -3,41 +3,36 @@ using System.Diagnostics;
 
 namespace Awale_Console
 {
-	public class GameManager
-	{
+    public class GameManager
+    {
 
-		public enum step 
-		{
-			UMUNIA,
-			UTEZA_NA_NDRAZI
-		}
+        public enum step
+        {
+            UMUNIA,
+            UTEZA_NA_NDRAZI
+        }
 
-		public step state = step.UMUNIA;
+        public step state = step.UMUNIA;
 
-		public void update_Step_Round(Board board)
-		{
-			board.round++;
-			if (board.seed > 0) 
-				state = step.UMUNIA;
-			else
-				state = step.UTEZA_NA_NDRAZI;
-		}
+        public void update_Step_Round(Board board)
+        {
+            board.round++;
+            if (board.seed > 0)
+                state = step.UMUNIA;
+            else
+                state = step.UTEZA_NA_NDRAZI;
+        }
 
-		public static void run()
-		{
+        public GameManager()
+        {
+            setTitle();
+        }
 
-		}
-
-		public GameManager ()
-		{
-			setTitle ();
-		}
-
-		static void setTitle()
-		{
-			Console.Title = "Awalé Game";
-		}
-		/*
+        static void setTitle()
+        {
+            Console.Title = "Awalé Game";
+        }
+        /*
 		static bool isGameEnd()
 		{
 			bool state = true;
@@ -88,6 +83,5 @@ namespace Awale_Console
 			}
 		}*/
 
-	}
+    }
 }
-

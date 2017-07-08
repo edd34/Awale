@@ -5,6 +5,8 @@ namespace Awale_Console
 {
 	public class Player
 	{
+        public Player player1;
+
 		public readonly string name;
 		//public int[] currentChoice = new int[4];
 		public Choice currentChoice;
@@ -36,6 +38,25 @@ namespace Awale_Console
 			public Corner corner;
 
 			public bool valid;
+            public bool isCoordValid(Board board)
+            {
+                if(board.checkerBoard[this.coord.X,this.coord.Y] == 0)
+                {
+                    return false;
+                }
+                else if(this.coord.X == 0 || this.coord.X == 1)
+                {
+                    return false;
+                }
+                else if(board.round <= 2 && board.isNyumba(this) && !board.isCapturePossible(this))
+                {
+                    return false; 
+                }
+                else
+                    return true;
+            }
+
+
 		}
 
 		public Player(string player)
@@ -45,7 +66,7 @@ namespace Awale_Console
 			name = player;
 		}
 			
-		public void ReadCornerDirection(Board board)
+		public void ReadCorner(Board board)
 		{
 			board.previousMove = "";
 			ConsoleKey keyPressed = ConsoleKey.Spacebar;
@@ -68,93 +89,79 @@ namespace Awale_Console
 			}while(!this.currentChoice.valid);
 			/////////////////////////////////////
 			board.previousMove +=" corner = "+ this.currentChoice.corner;
-			do {
-				this.currentChoice.valid = false;
-				Console.WriteLine ("\nChoose the direction (clockWise or counterClockWise) with the arrow");
-				keyPressed = Console.ReadKey(false).Key;//it is a blocking statement
-				if(keyPressed == ConsoleKey.LeftArrow )
-				{
-					this.currentChoice.valid = true;
-					this.currentChoice.direction = Direction.CounterClockWise;
-				}
-				else if(keyPressed == ConsoleKey.RightArrow )
-				{
-					this.currentChoice.valid = true;
-					this.currentChoice.direction = Direction.ClockWise;
-				}
-				else
-					this.currentChoice.valid = false;
 
-			} while(!this.currentChoice.valid);
-			board.previousMove +=" direction = " +this.currentChoice.direction;
 		}
 
 		public void ReadCoord(Board board)
 		{
 			board.previousMove = "";
-			var keyPressed = ConsoleKey.Spacebar;
 			char charPressed = '0';
 			////////////////
-			do {
+            do
+            {
+    			do {
 
-				Console.WriteLine ("\nChoose a letter[A;H] and press entrer");
-				charPressed = Console.ReadKey(false).KeyChar;//it is a blocking statement
-				if(charPressed >= 'A' && charPressed <= 'H' )
-				{
-					this.currentChoice.valid = true;
-					this.currentChoice.coord.Y = (int)charPressed-(int)'A';
-				}
-				else if(charPressed >= 'a' && charPressed <= 'h' ) 
-				{
-					this.currentChoice.coord.Y = (int)charPressed-(int)'a';
-					this.currentChoice.valid = true;
-				}
-				else
-				{
-					this.currentChoice.valid = false;
-				}
+    				Console.WriteLine ("\nChoose a letter[A;H] and press entrer");
+    				charPressed = Console.ReadKey(false).KeyChar;//it is a blocking statement
+    				if(charPressed >= 'A' && charPressed <= 'H' )
+    				{
+    					this.currentChoice.valid = true;
+    					this.currentChoice.coord.Y = (int)charPressed-(int)'A';
+    				}
+    				else if(charPressed >= 'a' && charPressed <= 'h' ) 
+    				{
+    					this.currentChoice.coord.Y = (int)charPressed-(int)'a';
+    					this.currentChoice.valid = true;
+    				}
+    				else
+    				{
+    					this.currentChoice.valid = false;
+    				}
 
-			} while(!this.currentChoice.valid);
-			board.previousMove += " "+ charPressed;
-			/////////////////
-			do {
-				this.currentChoice.valid = false;
-				Console.WriteLine ("\nChoose a cifer [1;4] and press entrer");
-				charPressed = Console.ReadKey(false).KeyChar;//it is a blocking statement
-				if(charPressed >= '1' && charPressed <= '4' )
-				{
-					this.currentChoice.valid = true;
-					this.currentChoice.coord.X = (int)charPressed - (int)'1';
-				}
-				else
-					this.currentChoice.valid = false;
+                } while(!this.currentChoice.valid );
+    			board.previousMove += " "+ charPressed;
+    			/////////////////
+    			do {
+    				this.currentChoice.valid = false;
+    				Console.WriteLine ("\nChoose a cifer [1;4] and press entrer");
+    				charPressed = Console.ReadKey(false).KeyChar;//it is a blocking statement
+    				if(charPressed >= '1' && charPressed <= '4' )
+    				{
+    					this.currentChoice.valid = true;
+    					this.currentChoice.coord.X = (int)charPressed - (int)'1';
+    				}
+    				else
+    					this.currentChoice.valid = false;
 
-			} while(!this.currentChoice.valid);
-			board.previousMove +=" "+ charPressed;
+    			} while(!this.currentChoice.valid);
+    			board.previousMove +=" "+ charPressed;
 			/////////////////////////////
-			board.previousMove +=" corner = "+ this.currentChoice.corner;
-			do {
-				this.currentChoice.valid = false;
-				Console.WriteLine ("\nChoose the direction (clockWise or counterClockWise) with the arrow");
-				keyPressed = Console.ReadKey(false).Key;//it is a blocking statement
-				if(keyPressed == ConsoleKey.LeftArrow )
-				{
-					this.currentChoice.valid = true;
-					this.currentChoice.direction = Direction.CounterClockWise;
-				}
-				else if(keyPressed == ConsoleKey.RightArrow )
-				{
-					this.currentChoice.valid = true;
-					this.currentChoice.direction = Direction.ClockWise;
-				}
-				else
-					this.currentChoice.valid = false;
-
-			} while(!this.currentChoice.valid);
-			board.previousMove +=" direction = " +this.currentChoice.direction;
-
+            } while(!this.currentChoice.isCoordValid(board));
 		}
 
+        public void ReadDirection(Board board)
+        {
+            ConsoleKey keyPressed = ConsoleKey.Spacebar;
+            do {
+                this.currentChoice.valid = false;
+                Console.WriteLine ("\nChoose the direction (clockWise or counterClockWise) with the arrow");
+                keyPressed = Console.ReadKey(false).Key;//it is a blocking statement
+                if(keyPressed == ConsoleKey.LeftArrow )
+                {
+                    this.currentChoice.valid = true;
+                    this.currentChoice.direction = Direction.CounterClockWise;
+                }
+                else if(keyPressed == ConsoleKey.RightArrow )
+                {
+                    this.currentChoice.valid = true;
+                    this.currentChoice.direction = Direction.ClockWise;
+                }
+                else
+                    this.currentChoice.valid = false;
+
+            } while(!this.currentChoice.valid);
+            board.previousMove +=" direction = " +this.currentChoice.direction;
+        }
 
 
 		public void takeAllMySeeds(Board board,Player.Choice currentChoice)
