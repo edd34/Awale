@@ -141,6 +141,7 @@ namespace Awale_Console
 
         public void ReadDirection(Board board)
         {
+
             ConsoleKey keyPressed = ConsoleKey.Spacebar;
             do {
                 this.currentChoice.valid = false;
