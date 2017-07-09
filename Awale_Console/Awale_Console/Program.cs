@@ -11,7 +11,7 @@ namespace Awale_Console
 	{
 		public static void Main (string[] args)
 		{
-            int var = 0;
+           
 
 			GameManager gameManager = new GameManager ();
 
@@ -33,7 +33,7 @@ namespace Awale_Console
 				board.move (gameManager, currentPlayer.currentChoice);
                 board.capture(currentPlayer,board);
 
-                var = board.disseminate (currentPlayer,board);
+                board.disseminate (currentPlayer,board);
                 //board.display (currentPlayer,gameManager.state);
                 //Console.ReadLine();
 				board.returnBoard ();

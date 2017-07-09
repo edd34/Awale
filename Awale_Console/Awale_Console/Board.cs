@@ -137,10 +137,11 @@ namespace Awale_Console
 
         public void capture(Player currentPlayer, Board board)
         {
+            int seedCaptured = 0;
             this.hasCaptured = false;
             if (board.isCapturePossible (currentPlayer.currentChoice)) 
             {
-                currentPlayer.takeAllOpponentsSeeds (board, currentPlayer.currentChoice);
+                seedCaptured = currentPlayer.takeAllOpponentsSeeds (board, currentPlayer.currentChoice);
 
                 if (board.isNyumba (currentPlayer.currentChoice)) 
                 {
@@ -162,8 +163,24 @@ namespace Awale_Console
 
             if (board.hasCaptured == true) 
             {   
-                currentPlayer.ReadCorner (board);
-                currentPlayer.ReadDirection(board);
+                switch(this.isCorner(currentPlayer.currentChoice))
+                {
+                    case Player.Corner.Left:
+                        currentPlayer.currentChoice.corner = Player.Corner.Left;
+                        break;
+                    case Player.Corner.Right:
+                        currentPlayer.currentChoice.corner = Player.Corner.Right;
+                        break;
+                    case Player.Corner.Neither:
+                        currentPlayer.ReadCorner (board);
+                        break;
+                }
+
+                if (seedCaptured > 1)
+                    currentPlayer.ReadDirection(board);
+                else
+                    currentPlayer.currentChoice.direction = Player.Direction.ClockWise;
+
                 if (currentPlayer.currentChoice.corner == Player.Corner.Left) 
                 {
                     if (currentPlayer.currentChoice.direction == Player.Direction.ClockWise) 
@@ -306,23 +323,6 @@ namespace Awale_Console
 
             }
             return 0;
-            /*else if(this.token == 0)
-            {
-                if(this.checkerBoard[currentChoice.coord.X, currentChoice.coord.Y]>0)
-                {
-                    if(this.isCapturePossible(currentChoice))
-                    {
-                        this.capture_disseminate(currentPlayer, this);
-                    }
-                    else
-                    {
-                        currentPlayer.takeAllMySeeds(this, currentChoice);
-                    }
-                }
-            }*/
-               
-
-
         }
 
         public void nextChoice(Player currentPlayer)
@@ -407,17 +407,19 @@ namespace Awale_Console
             return currentChoice.coord.X == 2 && currentChoice.coord.Y == 4;
         }
 
-        public bool isCorner(Player.Choice currentChoice) 
+        public Player.Corner isCorner(Player.Choice currentChoice) 
         {
             if (currentChoice.coord.X == 2)
             {
-                if (currentChoice.coord.Y == 0 || currentChoice.coord.Y == 1 || currentChoice.coord.Y == 6 || currentChoice.coord.Y == 7)
-                    return true;
+                if (currentChoice.coord.Y == 0 || currentChoice.coord.Y == 1)
+                    return Player.Corner.Left;
+                else if (currentChoice.coord.Y == 6 || currentChoice.coord.Y == 7)
+                    return Player.Corner.Left;
                 else
-                    return false;
+                    return Player.Corner.Neither;
             }
             else
-                return false;
+                return Player.Corner.Neither;
         }
 
         public bool askToSpreadNyumba(Board board, Player currentPlayer)
@@ -426,7 +428,7 @@ namespace Awale_Console
             ConsoleKey keyPressed;
             do
             {
-                Console.WriteLine("\nThis is the nyumba, do you want tp spread it ? (Y/N)");
+                Console.WriteLine("\nThis is your nyumba, do you want t0 spread it ? (Y/N)");
                 keyPressed = Console.ReadKey(false).Key;
                 if (keyPressed == ConsoleKey.Y)
                     value = true;

@@ -28,7 +28,7 @@ namespace Awale_Console
 
 		public enum Corner
 		{
-			Left,Right
+			Left,Right,Neither
 		}
 
 		public struct Choice
@@ -171,13 +171,16 @@ namespace Awale_Console
             board.checkerBoard [currentPlayer.currentChoice.coord.X, currentPlayer.currentChoice.coord.Y] = 0;
 		}
 
-		public void takeAllOpponentsSeeds(Board board,Player.Choice currentChoice)
+		public int takeAllOpponentsSeeds(Board board,Player.Choice currentChoice)
 		{
+            int seedTaken = 0;
 			if (currentChoice.coord.X == 2) 
 			{
+                seedTaken = board.checkerBoard[currentChoice.coord.X - 1, currentChoice.coord.Y];
 				board.token += board.checkerBoard [currentChoice.coord.X - 1, currentChoice.coord.Y];
 				board.checkerBoard [currentChoice.coord.X-1, currentChoice.coord.Y] = 0;
 			}
+            return seedTaken;
 		}
 
 	}
