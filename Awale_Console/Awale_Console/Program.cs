@@ -27,6 +27,7 @@ namespace Awale_Console
 				
 				Console.Clear ();
 				board.display (currentPlayer,gameManager.state);
+                gameManager.showCurrentPossibleMove(board);
                 currentPlayer.ReadCoord (board);
 
 

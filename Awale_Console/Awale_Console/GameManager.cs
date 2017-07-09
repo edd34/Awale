@@ -38,7 +38,27 @@ namespace Awale_Console
             return true;
         }
 
-       
+        public void showCurrentPossibleMove(Board board)
+        {
+            
+            Player.Choice tmpChoice = new Player.Choice();
+            Console.Write("Possible Move are : ");
+            for(int x = 2; x < 4; x++)
+            {
+                for(int y = 0; y<8; y++)
+                {
+                    tmpChoice.coord.X = x;
+                    tmpChoice.coord.Y = y;
+                    if(board.isPlayable(tmpChoice))
+                    {
+                        if(!(tmpChoice.isPossibleToCaptureSomewhere(board) && !board.isCapturePossible(tmpChoice)))
+                                Console.Write(" " + (char)(y+(int)'A') + (x+1));
+                          
+                            
+                    }
+                }
+            }
+        }
 
         static void setTitle()
         {

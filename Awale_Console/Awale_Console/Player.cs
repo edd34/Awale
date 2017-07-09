@@ -41,7 +41,7 @@ namespace Awale_Console
 
             public bool isPossibleToCaptureSomewhere(Board board)
             {
-                for(int i = 0;i <7;i++)
+                for(int i = 0;i <8;i++)
                 {
                     if (board.checkerBoard[2, i] > 0 && board.checkerBoard[1, i] > 0)
                         return true;
