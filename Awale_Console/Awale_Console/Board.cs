@@ -139,6 +139,8 @@ namespace Awale_Console
         {
             int seedCaptured = 0;
             this.hasCaptured = false;
+
+
             if (board.isCapturePossible (currentPlayer.currentChoice)) 
             {
                 seedCaptured = currentPlayer.takeAllOpponentsSeeds (board, currentPlayer.currentChoice);

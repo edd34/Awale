@@ -22,7 +22,7 @@ namespace Awale_Console
 			Player otherPlayer = player_2;
             
 			board.initialize ();
-			while (!board.game_end) 
+            while (!gameManager.isGameEnd(board,currentPlayer)) 
 			{
 				
 				Console.Clear ();

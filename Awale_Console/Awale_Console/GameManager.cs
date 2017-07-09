@@ -28,6 +28,18 @@ namespace Awale_Console
             setTitle();
         }
 
+        public bool isGameEnd(Board board,Player currentPlayer)
+        {
+            for(int i = 0;i <7;i++)
+            {
+                if (board.checkerBoard[2, i] > 0)
+                    return false;
+            }
+            return true;
+        }
+
+       
+
         static void setTitle()
         {
             Console.Title = "Awalé Game";

@@ -38,17 +38,32 @@ namespace Awale_Console
 			public Corner corner;
 
 			public bool valid;
+
+            public bool isPossibleToCaptureSomewhere(Board board)
+            {
+                for(int i = 0;i <7;i++)
+                {
+                    if (board.checkerBoard[2, i] > 0 && board.checkerBoard[3, i] > 0)
+                        return true;
+                }
+                return false;
+            }
+
+
             public bool isCoordValid(Board board)
             {
-                if(board.checkerBoard[this.coord.X,this.coord.Y] == 0)
+                
+
+
+                if (board.checkerBoard[this.coord.X, this.coord.Y] == 0)
                 {
                     return false;
                 }
-                else if(this.coord.X == 0 || this.coord.X == 1)
+                else if (this.coord.X == 0 || this.coord.X == 1)
                 {
                     return false;
                 }
-                else if(board.round <= 2 && board.isNyumba(this) && !board.isCapturePossible(this))
+                else if (board.round <= 2 && board.isNyumba(this) && !board.isCapturePossible(this))
                 {
                     return false; 
                 }
@@ -136,7 +151,7 @@ namespace Awale_Console
     			} while(!this.currentChoice.valid);
     			board.previousMove +=" "+ charPressed;
 			/////////////////////////////
-            } while(!this.currentChoice.isCoordValid(board));
+            } while(!this.currentChoice.isCoordValid(board) ||(!board.isCapturePossible(this.currentChoice) && this.currentChoice.isPossibleToCaptureSomewhere(board)));
 		}
 
         public void ReadDirection(Board board)
