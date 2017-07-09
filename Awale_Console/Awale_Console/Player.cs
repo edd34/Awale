@@ -155,7 +155,7 @@ namespace Awale_Console
 
                 isPossibleToCaptureSomeWhere = this.currentChoice.isPossibleToCaptureSomewhere(board);
                 capturePossibleCurrentChoice = board.isCapturePossible(this.currentChoice);
-            } while(this.currentChoice.isCoordValid(board) == false && 
+            } while(this.currentChoice.isCoordValid(board) == false || 
                 (capturePossibleCurrentChoice == false && isPossibleToCaptureSomeWhere == true)==true );
 		}
 
