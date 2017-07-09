@@ -178,7 +178,7 @@ namespace Awale_Console
                         break;
                 }
 
-                if (seedCaptured > 1)
+                if (seedCaptured > 1) //BUG
                     currentPlayer.ReadDirection(board);
                 else
                     currentPlayer.currentChoice.direction = Player.Direction.ClockWise;
