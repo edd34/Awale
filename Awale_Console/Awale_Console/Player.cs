@@ -6,7 +6,7 @@ namespace Awale_Console
 	public class Player
 	{
         public Player player1;
-
+        public bool NyumbaSpreaded = false;
 		public readonly string name;
 		//public int[] currentChoice = new int[4];
 		public Choice currentChoice;

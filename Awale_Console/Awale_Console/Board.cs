@@ -145,11 +145,12 @@ namespace Awale_Console
             {
                 seedCaptured = currentPlayer.takeAllOpponentsSeeds (board, currentPlayer.currentChoice);
 
-                if (board.isNyumba (currentPlayer.currentChoice)) 
+                if (board.isNyumba (currentPlayer.currentChoice) && !currentPlayer.NyumbaSpreaded) 
                 {
                     if (board.askToSpreadNyumba (board, currentPlayer) == true) 
                     {
                         currentPlayer.takeAllMySeeds (board, currentPlayer);
+                        currentPlayer.NyumbaSpreaded = true;
                     }
                 } 
 
@@ -180,6 +181,15 @@ namespace Awale_Console
 
                 if (seedCaptured > 1) //BUG
                     currentPlayer.ReadDirection(board);
+                else if(seedCaptured == 1  && 
+                    this.checkerBoard[currentPlayer.currentChoice.coord.X,currentPlayer.currentChoice.coord.Y]>0
+                    && this.checkerBoard[currentPlayer.currentChoice.coord.X-1,currentPlayer.currentChoice.coord.Y]>0)
+                {
+                    currentPlayer.takeAllMySeeds(this, currentPlayer);
+                    currentPlayer.takeAllOpponentsSeeds(this, currentPlayer.currentChoice);
+                    currentPlayer.ReadDirection(board);
+
+                }
                 else
                     currentPlayer.currentChoice.direction = Player.Direction.ClockWise;
 
@@ -220,69 +230,7 @@ namespace Awale_Console
             }
         }
 
-  /*      public void capture_disseminate(Player currentPlayer, Board board)
-        {
-            this.hasCaptured = false;
-            if (board.isCapturePossible (currentPlayer.currentChoice)) 
-            {
-                currentPlayer.takeAllOpponentsSeeds (board, currentPlayer.currentChoice);
-
-                if (board.isNyumba (currentPlayer.currentChoice)) 
-                {
-                    if (board.askToSpreadNyumba (board, currentPlayer) == true) 
-                    {
-                        currentPlayer.takeAllMySeeds (board, currentPlayer);
-                    }
-                } 
-
-
-
-                board.hasCaptured = true;
-            } 
-            else 
-            {
-                currentPlayer.takeAllMySeeds (board, currentPlayer);
-                board.hasCaptured = false;
-            }
-
-            if (board.hasCaptured == true) 
-            {   
-                currentPlayer.ReadCorner (board);
-                currentPlayer.ReadDirection(board);
-                if (currentPlayer.currentChoice.corner == Player.Corner.Left) 
-                {
-                    if (currentPlayer.currentChoice.direction == Player.Direction.ClockWise) 
-                    {
-                        currentPlayer.currentChoice.coord.X = 3;
-                        currentPlayer.currentChoice.coord.Y = 0;
-                    } 
-                    else if (currentPlayer.currentChoice.direction == Player.Direction.CounterClockWise) 
-                    {
-                        currentPlayer.currentChoice.coord.X = 2;
-                        currentPlayer.currentChoice.coord.Y = 1;
-                    }
-
-                } 
-                else if (currentPlayer.currentChoice.corner == Player.Corner.Right) 
-                {
-                    if (currentPlayer.currentChoice.direction == Player.Direction.ClockWise) 
-                    {
-                        currentPlayer.currentChoice.coord.X = 2;
-                        currentPlayer.currentChoice.coord.Y = 6;
-                    } 
-                    else if (currentPlayer.currentChoice.direction == Player.Direction.CounterClockWise) 
-                    {
-                        currentPlayer.currentChoice.coord.X = 3;
-                        currentPlayer.currentChoice.coord.Y = 7;
-                    }
-
-                } 
-            }
-            else if (board.hasCaptured == false) 
-            {
-               
-            }
-        }*/
+ 
 
         public bool isCapturePossible(Player.Choice currentChoice)
         {
@@ -317,7 +265,8 @@ namespace Awale_Console
                     this.checkerBoard[currentPlayer.currentChoice.coord.X, currentPlayer.currentChoice.coord.Y]++;
                     if (this.checkerBoard[currentPlayer.currentChoice.coord.X, currentPlayer.currentChoice.coord.Y] > 1)
                     {
-                        currentPlayer.takeAllMySeeds(this, currentPlayer);
+                        //currentPlayer.takeAllMySeeds(this, currentPlayer);
+                        this.capture(currentPlayer,this);
                     }
                     else
                         return 1;
@@ -437,6 +386,7 @@ namespace Awale_Console
                 else if (keyPressed == ConsoleKey.N)
                     value = false;
             } while(!(keyPressed == ConsoleKey.Y || keyPressed == ConsoleKey.N));
+
             return value;
         }
 
@@ -444,3 +394,66 @@ namespace Awale_Console
     }
 }
 
+/*      public void capture_disseminate(Player currentPlayer, Board board)
+        {
+            this.hasCaptured = false;
+            if (board.isCapturePossible (currentPlayer.currentChoice)) 
+            {
+                currentPlayer.takeAllOpponentsSeeds (board, currentPlayer.currentChoice);
+
+                if (board.isNyumba (currentPlayer.currentChoice)) 
+                {
+                    if (board.askToSpreadNyumba (board, currentPlayer) == true) 
+                    {
+                        currentPlayer.takeAllMySeeds (board, currentPlayer);
+                    }
+                } 
+
+
+
+                board.hasCaptured = true;
+            } 
+            else 
+            {
+                currentPlayer.takeAllMySeeds (board, currentPlayer);
+                board.hasCaptured = false;
+            }
+
+            if (board.hasCaptured == true) 
+            {   
+                currentPlayer.ReadCorner (board);
+                currentPlayer.ReadDirection(board);
+                if (currentPlayer.currentChoice.corner == Player.Corner.Left) 
+                {
+                    if (currentPlayer.currentChoice.direction == Player.Direction.ClockWise) 
+                    {
+                        currentPlayer.currentChoice.coord.X = 3;
+                        currentPlayer.currentChoice.coord.Y = 0;
+                    } 
+                    else if (currentPlayer.currentChoice.direction == Player.Direction.CounterClockWise) 
+                    {
+                        currentPlayer.currentChoice.coord.X = 2;
+                        currentPlayer.currentChoice.coord.Y = 1;
+                    }
+
+                } 
+                else if (currentPlayer.currentChoice.corner == Player.Corner.Right) 
+                {
+                    if (currentPlayer.currentChoice.direction == Player.Direction.ClockWise) 
+                    {
+                        currentPlayer.currentChoice.coord.X = 2;
+                        currentPlayer.currentChoice.coord.Y = 6;
+                    } 
+                    else if (currentPlayer.currentChoice.direction == Player.Direction.CounterClockWise) 
+                    {
+                        currentPlayer.currentChoice.coord.X = 3;
+                        currentPlayer.currentChoice.coord.Y = 7;
+                    }
+
+                } 
+            }
+            else if (board.hasCaptured == false) 
+            {
+               
+            }
+        }*/
