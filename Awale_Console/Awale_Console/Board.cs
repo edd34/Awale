@@ -220,7 +220,7 @@ namespace Awale_Console
             }
         }
 
-        public void capture_disseminate(Player currentPlayer, Board board)
+  /*      public void capture_disseminate(Player currentPlayer, Board board)
         {
             this.hasCaptured = false;
             if (board.isCapturePossible (currentPlayer.currentChoice)) 
@@ -282,7 +282,7 @@ namespace Awale_Console
             {
                
             }
-        }
+        }*/
 
         public bool isCapturePossible(Player.Choice currentChoice)
         {
