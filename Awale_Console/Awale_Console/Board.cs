@@ -457,3 +457,33 @@ namespace Awale_Console
                
             }
         }*/
+
+
+/*
+else 
+{
+    if (board.isNyumba(currentPlayer.currentChoice) && currentPlayer.NyumbaSpreaded == false)
+        /* do
+                    {
+                        Console.WriteLine("How many seed do you want to spread ?");
+                        try
+                        {
+                            read = Convert.ToInt32(Console.ReadLine());
+
+                            if (read > 0
+                            && read <= this.checkerBoard[currentPlayer.currentChoice.coord.X, currentPlayer.currentChoice.coord.Y])
+                                isEntryOk = true;
+                            else
+                                isEntryOk = false;
+                        }
+                        catch
+                        {
+                            isEntryOk = false;
+                        }
+                    } while(!isEntryOk);
+                
+        currentPlayer.takeAllMySeeds (board, currentPlayer);
+    board.hasCaptured = false;
+
+}
+*/
