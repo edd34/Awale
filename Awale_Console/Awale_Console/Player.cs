@@ -43,7 +43,7 @@ namespace Awale_Console
             {
                 for(int i = 0;i <7;i++)
                 {
-                    if (board.checkerBoard[2, i] > 0 && board.checkerBoard[3, i] > 0)
+                    if (board.checkerBoard[2, i] > 0 && board.checkerBoard[1, i] > 0)
                         return true;
                 }
                 return false;
@@ -109,6 +109,8 @@ namespace Awale_Console
 
 		public void ReadCoord(Board board)
 		{
+            bool capturePossibleCurrentChoice = false;
+            bool isPossibleToCaptureSomeWhere = false;
 			board.previousMove = "";
 			char charPressed = '0';
 			////////////////
@@ -150,8 +152,11 @@ namespace Awale_Console
 
     			} while(!this.currentChoice.valid);
     			board.previousMove +=" "+ charPressed;
-			/////////////////////////////
-            } while(!this.currentChoice.isCoordValid(board) ||(!board.isCapturePossible(this.currentChoice) && this.currentChoice.isPossibleToCaptureSomewhere(board)));
+
+                isPossibleToCaptureSomeWhere = this.currentChoice.isPossibleToCaptureSomewhere(board);
+                capturePossibleCurrentChoice = board.isCapturePossible(this.currentChoice);
+            } while(this.currentChoice.isCoordValid(board) == false && 
+                (capturePossibleCurrentChoice == false && isPossibleToCaptureSomeWhere == true)==true );
 		}
 
         public void ReadDirection(Board board)
