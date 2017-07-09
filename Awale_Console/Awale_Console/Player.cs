@@ -1,13 +1,31 @@
 ﻿using System;
-using System.Diagnostics;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
 
 namespace Awale_Console
 {
 	public class Player
 	{
-        public Player player1;
+        public bool isIA = false;
         public bool NyumbaSpreaded = false;
-		public readonly string name;
+		public string name;
+
+        public Player()
+        {
+              //Console.WriteLine ("Enter the name for this player");
+            this.name = "Unknown"; //Console.ReadLine ();
+            this.isIA = false;
+        }
+
+        public Player(string player)
+        {
+            //  Console.WriteLine ("Enter the name for "+player);
+            //  name = Console.ReadLine ();
+            this.isIA = false;
+            name = player;
+        }
+
 		//public int[] currentChoice = new int[4];
 		public Choice currentChoice;
 		public enum step 
@@ -37,6 +55,7 @@ namespace Awale_Console
 			public Direction direction;
 			public Corner corner;
 
+           
 			public bool valid;
 
             public bool isPossibleToCaptureSomewhere(Board board)
@@ -74,14 +93,9 @@ namespace Awale_Console
 
 		}
 
-		public Player(string player)
-		{
-		//	Console.WriteLine ("Enter the name for "+player);
-		//	name = Console.ReadLine ();
-			name = player;
-		}
+		
 			
-		public void ReadCorner(Board board)
+		public virtual void ReadCorner(Board board)
 		{
 			board.previousMove = "";
 			ConsoleKey keyPressed = ConsoleKey.Spacebar;
@@ -107,7 +121,7 @@ namespace Awale_Console
 
 		}
 
-		public void ReadCoord(Board board)
+		public virtual void ReadCoord(Board board)
 		{
             bool capturePossibleCurrentChoice = false;
             bool isPossibleToCaptureSomeWhere = false;
@@ -159,7 +173,7 @@ namespace Awale_Console
                 (capturePossibleCurrentChoice == false && isPossibleToCaptureSomeWhere == true)==true );
 		}
 
-        public void ReadDirection(Board board)
+        public virtual void ReadDirection(Board board)
         {
 
             ConsoleKey keyPressed = ConsoleKey.Spacebar;

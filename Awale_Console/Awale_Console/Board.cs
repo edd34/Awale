@@ -1,4 +1,7 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
 
 namespace Awale_Console
 {
@@ -377,16 +380,22 @@ namespace Awale_Console
         {
             bool value = false;
             ConsoleKey keyPressed;
-            do
+            if (currentPlayer.isIA == false)
             {
-                Console.WriteLine("\nThis is your nyumba, do you want t0 spread it ? (Y/N)");
-                keyPressed = Console.ReadKey(false).Key;
-                if (keyPressed == ConsoleKey.Y)
-                    value = true;
-                else if (keyPressed == ConsoleKey.N)
-                    value = false;
-            } while(!(keyPressed == ConsoleKey.Y || keyPressed == ConsoleKey.N));
-
+                do
+                {
+                    Console.WriteLine("\nThis is your nyumba, do you want t0 spread it ? (Y/N)");
+                    keyPressed = Console.ReadKey(false).Key;
+                    if (keyPressed == ConsoleKey.Y)
+                        value = true;
+                    else if (keyPressed == ConsoleKey.N)
+                        value = false;
+                } while(!(keyPressed == ConsoleKey.Y || keyPressed == ConsoleKey.N));
+            }
+            else
+            {
+                value = (new Random().Next() % 100 < 7) ? true : false;
+            }
             return value;
         }
 

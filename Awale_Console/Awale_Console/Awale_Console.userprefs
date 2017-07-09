@@ -2,17 +2,20 @@
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug|x86" />
   <MonoDevelop.Ide.Workbench ActiveDocument="Board.cs">
     <Files>
-      <File FileName="Program.cs" Line="38" Column="22" />
-      <File FileName="Player.cs" Line="46" Column="57" />
-      <File FileName="Board.cs" Line="484" Column="17" />
-      <File FileName="GameManager.cs" Line="53" Column="7" />
+      <File FileName="Program.cs" Line="47" Column="13" />
+      <File FileName="Player.cs" Line="8" Column="2" />
+      <File FileName="Board.cs" Line="403" Column="6" />
+      <File FileName="GameManager.cs" Line="63" Column="1" />
+      <File FileName="PlayerIA.cs" Line="19" Column="29" />
     </Files>
     <Pads>
-      <Pad Id="MonoDevelop.Debugger.WatchPad">
-        <State>
-          <Value>isPossibleToCaptureSomeWhere</Value>
-          <Value>capturePossibleCurrentChoice</Value>
-          <Value>tmpChoice.coord</Value>
+      <Pad Id="ProjectPad">
+        <State name="__root__">
+          <Node name="Awale_Console" expanded="True">
+            <Node name="Awale_Console" expanded="True">
+              <Node name="Board.cs" selected="True" />
+            </Node>
+          </Node>
         </State>
       </Pad>
     </Pads>

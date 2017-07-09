@@ -1,6 +1,7 @@
 ﻿using System;
-using System.Diagnostics;
-
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
 namespace Awale_Console
 {
     public class GameManager

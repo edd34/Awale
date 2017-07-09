@@ -40,6 +40,7 @@
     <Compile Include="Player.cs" />
     <Compile Include="Board.cs" />
     <Compile Include="GameManager.cs" />
+    <Compile Include="PlayerIA.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
 </Project>
