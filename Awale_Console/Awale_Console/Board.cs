@@ -146,7 +146,7 @@ namespace Awale_Console
                 {
                     if (board.askToSpreadNyumba (board, currentPlayer) == true) 
                     {
-                        currentPlayer.takeAllMySeeds (board, currentPlayer.currentChoice);
+                        currentPlayer.takeAllMySeeds (board, currentPlayer);
                     }
                 } 
 
@@ -156,7 +156,7 @@ namespace Awale_Console
             } 
             else 
             {
-                currentPlayer.takeAllMySeeds (board, currentPlayer.currentChoice);
+                currentPlayer.takeAllMySeeds (board, currentPlayer);
                 board.hasCaptured = false;
             }
 
@@ -164,7 +164,6 @@ namespace Awale_Console
             {   
                 currentPlayer.ReadCorner (board);
                 currentPlayer.ReadDirection(board);
-                Console.WriteLine("Hello");
                 if (currentPlayer.currentChoice.corner == Player.Corner.Left) 
                 {
                     if (currentPlayer.currentChoice.direction == Player.Direction.ClockWise) 
@@ -196,8 +195,9 @@ namespace Awale_Console
             }
             else if (board.hasCaptured == false) 
             {
-                Console.WriteLine("Hello2");
                 currentPlayer.ReadDirection(board);
+                currentPlayer.takeAllMySeeds(this,currentPlayer);
+
             }
         }
 
@@ -212,7 +212,7 @@ namespace Awale_Console
                 {
                     if (board.askToSpreadNyumba (board, currentPlayer) == true) 
                     {
-                        currentPlayer.takeAllMySeeds (board, currentPlayer.currentChoice);
+                        currentPlayer.takeAllMySeeds (board, currentPlayer);
                     }
                 } 
 
@@ -222,7 +222,7 @@ namespace Awale_Console
             } 
             else 
             {
-                currentPlayer.takeAllMySeeds (board, currentPlayer.currentChoice);
+                currentPlayer.takeAllMySeeds (board, currentPlayer);
                 board.hasCaptured = false;
             }
 
@@ -230,7 +230,6 @@ namespace Awale_Console
             {   
                 currentPlayer.ReadCorner (board);
                 currentPlayer.ReadDirection(board);
-                Console.WriteLine("Hello");
                 if (currentPlayer.currentChoice.corner == Player.Corner.Left) 
                 {
                     if (currentPlayer.currentChoice.direction == Player.Direction.ClockWise) 
@@ -282,104 +281,113 @@ namespace Awale_Console
         }
 
 
-        public void disseminate(Player.Choice currentChoice, Player currentPlayer)
+        public int disseminate(Player currentPlayer,Board board)
         {
-
-
             while (this.token > 0)
             {
-                
-                if (currentChoice.direction == Player.Direction.ClockWise)
+                if(this.token > 1)
                 {
-                    if (currentChoice.coord.X == 2)
-                    {
-
-                        if (currentChoice.coord.Y == 7)
-                        {
-                            currentChoice.coord.X = 3;
-                            this.checkerBoard[currentChoice.coord.X, currentChoice.coord.Y]++;
-                            this.token--;
-                        }
-                        else
-                        {
-                            currentChoice.coord.Y++;
-                            this.checkerBoard[currentChoice.coord.X, currentChoice.coord.Y]++;
-                            this.token--;
-                        }
-                    }
-                    else if (currentChoice.coord.X == 3)
-                    {
-
-                        if (currentChoice.coord.Y == 0)
-                        {	
-                            currentChoice.coord.X = 2;
-                            this.checkerBoard[currentChoice.coord.X, currentChoice.coord.Y]++;
-                            this.token--;
-
-                        }
-                        else
-                        {
-                            currentChoice.coord.Y--;
-                            this.checkerBoard[currentChoice.coord.X, currentChoice.coord.Y]++;
-                            this.token--;
-                        }
-                    }
+                    this.nextChoice(currentPlayer);
+                    this.token--;
+                    this.checkerBoard[currentPlayer.currentChoice.coord.X, currentPlayer.currentChoice.coord.Y]++;
                 }
-                else if (currentChoice.direction == Player.Direction.CounterClockWise)
+               else if(this.token == 1)
                 {
-                    if (currentChoice.coord.X == 2)
+                    this.nextChoice(currentPlayer);
+                    this.token--;
+                    this.checkerBoard[currentPlayer.currentChoice.coord.X, currentPlayer.currentChoice.coord.Y]++;
+                    if (this.checkerBoard[currentPlayer.currentChoice.coord.X, currentPlayer.currentChoice.coord.Y] > 1)
                     {
-
-                        if (currentChoice.coord.Y == 0)
-                        {
-                            currentChoice.coord.X = 3;
-                            this.checkerBoard[currentChoice.coord.X, currentChoice.coord.Y]++;
-                            this.token--;
-                        }
-                        else
-                        {
-                            currentChoice.coord.Y--;
-                            this.checkerBoard[currentChoice.coord.X, currentChoice.coord.Y]++;
-                            this.token--;
-                        }
+                        currentPlayer.takeAllMySeeds(this, currentPlayer);
                     }
-                    else if (currentChoice.coord.X == 3)
-                    {
-
-                        if (currentChoice.coord.Y == 7)
-                        {	
-                            currentChoice.coord.X = 2;
-                            this.checkerBoard[currentChoice.coord.X, currentChoice.coord.Y]++;
-                            this.token--;
-                        }
-                        else
-                        {
-                            currentChoice.coord.Y++;
-                            this.checkerBoard[currentChoice.coord.X, currentChoice.coord.Y]++;
-                            token--;
-
-                        }
-
-                    }
+                    else
+                        return 1;
                 }
-                if(this.token == 1)
-                {
-                    if(this.checkerBoard[currentChoice.coord.X, currentChoice.coord.Y]>0)
-                    {
-                        if(this.isCapturePossible(currentChoice))
-                        {
-                            this.capture_disseminate(currentPlayer, this);
-                        }
-                        else
-                        {
-                            currentPlayer.takeAllMySeeds(this, currentChoice);
-                        }
-                    }
-                }
-               
+
             }
+            return 0;
+            /*else if(this.token == 0)
+            {
+                if(this.checkerBoard[currentChoice.coord.X, currentChoice.coord.Y]>0)
+                {
+                    if(this.isCapturePossible(currentChoice))
+                    {
+                        this.capture_disseminate(currentPlayer, this);
+                    }
+                    else
+                    {
+                        currentPlayer.takeAllMySeeds(this, currentChoice);
+                    }
+                }
+            }*/
+               
+
 
         }
+
+        public void nextChoice(Player currentPlayer)
+        {
+            if (currentPlayer.currentChoice.direction == Player.Direction.ClockWise)
+                {
+                    if (currentPlayer.currentChoice.coord.X == 2)
+                    {
+
+                        if (currentPlayer.currentChoice.coord.Y == 7)
+                        {
+                            currentPlayer.currentChoice.coord.X = 3;
+                        }
+                        else
+                        {
+                            currentPlayer.currentChoice.coord.Y++;
+                        }
+                    }
+                    else if (currentPlayer.currentChoice.coord.X == 3)
+                    {
+
+                        if (currentPlayer.currentChoice.coord.Y == 0)
+                        {   
+                            currentPlayer.currentChoice.coord.X = 2;
+
+                        }
+                        else
+                        {
+                            currentPlayer.currentChoice.coord.Y--;
+                        }
+                    }
+                }
+            else if (currentPlayer.currentChoice.direction == Player.Direction.CounterClockWise)
+                {
+                    if (currentPlayer.currentChoice.coord.X == 2)
+                    {
+
+                        if (currentPlayer.currentChoice.coord.Y == 0)
+                        {
+                            currentPlayer.currentChoice.coord.X = 3;
+                        }
+                        else
+                        {
+                            currentPlayer.currentChoice.coord.Y--;
+                        }
+                    }
+                    else if (currentPlayer.currentChoice.coord.X == 3)
+                    {
+
+                        if (currentPlayer.currentChoice.coord.Y == 7)
+                        {   
+                            currentPlayer.currentChoice.coord.X = 2;
+                        }
+                        else
+                        {
+                            currentPlayer.currentChoice.coord.Y++;;
+
+                        }
+
+                    }
+                }
+
+        }
+
+
 
         public void move(GameManager gameManager, Player.Choice currentChoice)
         {

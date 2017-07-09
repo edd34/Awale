@@ -165,10 +165,10 @@ namespace Awale_Console
         }
 
 
-		public void takeAllMySeeds(Board board,Player.Choice currentChoice)
+		public void takeAllMySeeds(Board board,Player currentPlayer)
 		{
-			board.token += board.checkerBoard [currentChoice.coord.X, currentChoice.coord.Y];
-			board.checkerBoard [currentChoice.coord.X, currentChoice.coord.Y] = 0;
+            board.token += board.checkerBoard [currentPlayer.currentChoice.coord.X, currentPlayer.currentChoice.coord.Y];
+            board.checkerBoard [currentPlayer.currentChoice.coord.X, currentPlayer.currentChoice.coord.Y] = 0;
 		}
 
 		public void takeAllOpponentsSeeds(Board board,Player.Choice currentChoice)
