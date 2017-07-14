@@ -1,24 +1,15 @@
 ﻿<Properties StartupItem="Awale_Console.csproj">
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug|x86" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="Board.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="StartGame.cs">
     <Files>
-      <File FileName="Program.cs" Line="47" Column="13" />
-      <File FileName="Player.cs" Line="8" Column="2" />
-      <File FileName="Board.cs" Line="403" Column="6" />
-      <File FileName="GameManager.cs" Line="63" Column="1" />
-      <File FileName="PlayerIA.cs" Line="19" Column="29" />
+      <File FileName="Program.cs" Line="15" Column="15" />
+      <File FileName="Player.cs" Line="1" Column="1" />
+      <File FileName="Board.cs" Line="124" Column="14" />
+      <File FileName="GameManager.cs" Line="1" Column="1" />
+      <File FileName="PlayerIA.cs" Line="1" Column="1" />
+      <File FileName="StartGame.cs" Line="113" Column="36" />
+      <File FileName="PlayerNetwork.cs" Line="19" Column="27" />
     </Files>
-    <Pads>
-      <Pad Id="ProjectPad">
-        <State name="__root__">
-          <Node name="Awale_Console" expanded="True">
-            <Node name="Awale_Console" expanded="True">
-              <Node name="Board.cs" selected="True" />
-            </Node>
-          </Node>
-        </State>
-      </Pad>
-    </Pads>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>
     <BreakpointStore />
