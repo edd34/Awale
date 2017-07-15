@@ -4,11 +4,11 @@
     <Files>
       <File FileName="Program.cs" Line="15" Column="15" />
       <File FileName="Player.cs" Line="1" Column="1" />
-      <File FileName="Board.cs" Line="124" Column="14" />
+      <File FileName="Board.cs" Line="162" Column="1" />
       <File FileName="GameManager.cs" Line="1" Column="1" />
       <File FileName="PlayerIA.cs" Line="1" Column="1" />
-      <File FileName="StartGame.cs" Line="113" Column="36" />
-      <File FileName="PlayerNetwork.cs" Line="19" Column="27" />
+      <File FileName="StartGame.cs" Line="132" Column="1" />
+      <File FileName="PlayerNetwork.cs" Line="55" Column="19" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>
