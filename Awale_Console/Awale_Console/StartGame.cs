@@ -32,9 +32,9 @@ namespace Awale_Console
 
 
                 board.move (gameManager, currentPlayer.currentChoice);
-                board.capture(currentPlayer,board);
+                board.capture(currentPlayer);
 
-                board.disseminate (currentPlayer,board);
+                board.disseminate (currentPlayer);
                 //board.display (currentPlayer,gameManager.state);
                 //Console.ReadLine();
                 board.returnBoard ();
@@ -73,9 +73,9 @@ namespace Awale_Console
 
 
                 board.move (gameManager, currentPlayer.currentChoice);
-                board.capture(currentPlayer,board);
+                board.capture(currentPlayer);
 
-                board.disseminate (currentPlayer,board);
+                board.disseminate (currentPlayer);
                 //board.display (currentPlayer,gameManager.state);
                 //Console.ReadLine();
                 board.returnBoard ();
@@ -123,9 +123,9 @@ namespace Awale_Console
 
 
                     board.move(gameManager, player_1.currentChoice);
-                    board.capture(player_1, board);
+                    board.capture(player_1);
                     board.display (player_1,gameManager.state);
-                    board.disseminate(player_1, board);
+                    board.disseminate(player_1);
                     board.returnBoard();
                     player_1.asen = new ASCIIEncoding();
                     //ba=player_1.asen.GetBytes(board.ToString());
@@ -146,9 +146,9 @@ namespace Awale_Console
 
 
                     board.move (gameManager, player_1.currentChoice);
-                    board.capture(player_1,board);
+                    board.capture(player_1);
 
-                    board.disseminate (player_1,board);
+                    board.disseminate (player_1);
                     board.display (player_1,gameManager.state);
                     board.returnBoard();
                     ba = new byte[1000];

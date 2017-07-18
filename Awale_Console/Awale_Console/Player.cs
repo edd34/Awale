@@ -180,7 +180,7 @@ namespace Awale_Console
             do {
                 this.currentChoice.valid = false;
                 Console.WriteLine ("\nChoose the direction (clockWise or counterClockWise) with the arrow");
-                keyPressed = Console.ReadKey(false).Key;//it is a blocking statement
+                keyPressed = Console.ReadKey(false).Key;
                 if(keyPressed == ConsoleKey.LeftArrow )
                 {
                     this.currentChoice.valid = true;
@@ -199,20 +199,20 @@ namespace Awale_Console
         }
 
 
-		public void takeAllMySeeds(Board board,Player currentPlayer)
+		public void takeAllMySeeds(Board board)
 		{
-            board.token += board.checkerBoard [currentPlayer.currentChoice.coord.X, currentPlayer.currentChoice.coord.Y];
-            board.checkerBoard [currentPlayer.currentChoice.coord.X, currentPlayer.currentChoice.coord.Y] = 0;
+            board.token += board.checkerBoard [this.currentChoice.coord.X, this.currentChoice.coord.Y];
+            board.checkerBoard [this.currentChoice.coord.X, this.currentChoice.coord.Y] = 0;
 		}
 
-		public int takeAllOpponentsSeeds(Board board,Player.Choice currentChoice)
+		public int takeAllOpponentsSeeds(Board board)
 		{
             int seedTaken = 0;
 			if (currentChoice.coord.X == 2) 
 			{
-                seedTaken = board.checkerBoard[currentChoice.coord.X - 1, currentChoice.coord.Y];
-				board.token += board.checkerBoard [currentChoice.coord.X - 1, currentChoice.coord.Y];
-				board.checkerBoard [currentChoice.coord.X-1, currentChoice.coord.Y] = 0;
+                seedTaken = board.checkerBoard[this.currentChoice.coord.X - 1, this.currentChoice.coord.Y];
+				board.token += board.checkerBoard [this.currentChoice.coord.X - 1, this.currentChoice.coord.Y];
+				board.checkerBoard [this.currentChoice.coord.X-1, this.currentChoice.coord.Y] = 0;
 			}
             return seedTaken;
 		}

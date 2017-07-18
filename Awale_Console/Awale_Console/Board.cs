@@ -46,8 +46,12 @@ namespace Awale_Console
 
         public void display(Player currentPlayer, GameManager.step state)//main display fonction for each round
         {
+            this.showBoard(currentPlayer);
+            this.showMiscInfo(state);
+        }
 
-            //Console.Clear ();
+        public void showBoard(Player currentPlayer)
+        {
             Console.WriteLine();
             Console.WriteLine();
             Console.Write("     A   B   C   D   E   F   G   H");
@@ -82,13 +86,12 @@ namespace Awale_Console
             Console.Write("     A   B   C   D   E   F   G   H");
             Console.WriteLine();
             Console.WriteLine();
-            Console.WriteLine("    Player : " + currentPlayer.name + "  |  Round : " + round + "  |  Step : " + state);
-            if (round == 1)
-                Console.WriteLine();
-            else
-                Console.WriteLine("Previous move = " + this.previousMove);
-
-
+            Console.Write("    Player : " + currentPlayer.name + "  |  Round : " + round);
+        }
+        public void showMiscInfo(GameManager.step state)
+        {
+            Console.Write("  |  Step : " + state);
+            Console.WriteLine();
         }
 
         public override string ToString()
@@ -172,36 +175,36 @@ namespace Awale_Console
             }
         }
 
-        public void capture(Player currentPlayer, Board board)
+        public void capture(Player currentPlayer)
         {
             int seedCaptured = 0;
             this.hasCaptured = false;
 
 
-            if (board.isCapturePossible (currentPlayer.currentChoice)) 
+            if (this.isCapturePossible (currentPlayer.currentChoice)) 
             {
-                seedCaptured = currentPlayer.takeAllOpponentsSeeds (board, currentPlayer.currentChoice);
+                seedCaptured = currentPlayer.takeAllOpponentsSeeds (this);
 
-                if (board.isNyumba (currentPlayer.currentChoice) && !currentPlayer.NyumbaSpreaded) 
+                if (this.isNyumba (currentPlayer.currentChoice) && !currentPlayer.NyumbaSpreaded) 
                 {
-                    if (board.askToSpreadNyumba (board, currentPlayer) == true) 
+                    if (this.askToSpreadNyumba ( currentPlayer) == true) 
                     {
-                        currentPlayer.takeAllMySeeds (board, currentPlayer);
+                        currentPlayer.takeAllMySeeds ( this);
                         currentPlayer.NyumbaSpreaded = true;
                     }
                 } 
 
 
 
-                board.hasCaptured = true;
+                this.hasCaptured = true;
             } 
             else 
             {
-                currentPlayer.takeAllMySeeds (board, currentPlayer);
-                board.hasCaptured = false;
+                currentPlayer.takeAllMySeeds (this);
+                this.hasCaptured = false;
             }
 
-            if (board.hasCaptured == true) 
+            if (this.hasCaptured == true) 
             {   
                 switch(this.isCorner(currentPlayer.currentChoice))
                 {
@@ -212,19 +215,24 @@ namespace Awale_Console
                         currentPlayer.currentChoice.corner = Player.Corner.Right;
                         break;
                     case Player.Corner.Neither:
-                        currentPlayer.ReadCorner (board);
+                        showBoard(currentPlayer);
+                        currentPlayer.ReadCorner (this);
                         break;
                 }
 
-                if (seedCaptured > 1) //BUG
-                    currentPlayer.ReadDirection(board);
+                if (seedCaptured > 1)
+                {
+                    showBoard(currentPlayer);
+                    currentPlayer.ReadDirection(this);
+                }
                 else if(seedCaptured == 1  && 
                     this.checkerBoard[currentPlayer.currentChoice.coord.X,currentPlayer.currentChoice.coord.Y]>0
                     && this.checkerBoard[currentPlayer.currentChoice.coord.X-1,currentPlayer.currentChoice.coord.Y]>0)
                 {
-                    currentPlayer.takeAllMySeeds(this, currentPlayer);
-                    currentPlayer.takeAllOpponentsSeeds(this, currentPlayer.currentChoice);
-                    currentPlayer.ReadDirection(board);
+                    currentPlayer.takeAllMySeeds(this);
+                    currentPlayer.takeAllOpponentsSeeds(this);
+                    showBoard(currentPlayer);
+                    currentPlayer.ReadDirection(this);
 
                 }
                 else
@@ -259,10 +267,10 @@ namespace Awale_Console
 
                 } 
             }
-            else if (board.hasCaptured == false) 
+            else if (this.hasCaptured == false) 
             {
-                currentPlayer.ReadDirection(board);
-                currentPlayer.takeAllMySeeds(this,currentPlayer);
+                currentPlayer.ReadDirection(this);
+                currentPlayer.takeAllMySeeds(this);
 
             }
         }
@@ -285,10 +293,8 @@ namespace Awale_Console
         }
 
 
-        public int disseminate(Player currentPlayer,Board board)
+        public void disseminate(Player currentPlayer)
         {
-            while (this.token > 0)
-            {
                 if(this.token > 1)
                 {
                     this.nextChoice(currentPlayer);
@@ -303,14 +309,16 @@ namespace Awale_Console
                     if (this.checkerBoard[currentPlayer.currentChoice.coord.X, currentPlayer.currentChoice.coord.Y] > 1)
                     {
                         //currentPlayer.takeAllMySeeds(this, currentPlayer);
-                        this.capture(currentPlayer,this);
+                        this.capture(currentPlayer);
                     }
-                    else
-                        return 1;
                 }
 
+            if(this.token > 0)
+            {
+                
+                this.disseminate(currentPlayer);
             }
-            return 0;
+
         }
 
         public void nextChoice(Player currentPlayer)
@@ -410,7 +418,7 @@ namespace Awale_Console
                 return Player.Corner.Neither;
         }
 
-        public bool askToSpreadNyumba(Board board, Player currentPlayer)
+        public bool askToSpreadNyumba(Player currentPlayer)
         {
             bool value = false;
             ConsoleKey keyPressed;
