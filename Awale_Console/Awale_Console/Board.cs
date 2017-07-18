@@ -15,7 +15,7 @@ namespace Awale_Console
         public int token;
         public string previousMove = "";
         public bool hasCaptured = false;
-
+        private bool endMoveNonEmpty = false;
 
 
         public Board()
@@ -204,9 +204,9 @@ namespace Awale_Console
                 this.hasCaptured = false;
             }
 
-            if (this.hasCaptured == true) 
+            if (this.hasCaptured == true)
             {   
-                switch(this.isCorner(currentPlayer.currentChoice))
+                switch (this.isCorner(currentPlayer.currentChoice))
                 {
                     case Player.Corner.Left:
                         currentPlayer.currentChoice.corner = Player.Corner.Left;
@@ -216,50 +216,56 @@ namespace Awale_Console
                         break;
                     case Player.Corner.Neither:
                         showBoard(currentPlayer);
-                        currentPlayer.ReadCorner (this);
+                        Console.WriteLine("\nYou have captured at [{0};{1}] !",
+                            (char)((int)'A' + currentPlayer.currentChoice.coord.Y), currentPlayer.currentChoice.coord.X + 1);
+                        currentPlayer.ReadCorner(this);
                         break;
                 }
 
                 if (seedCaptured > 1)
                 {
                     showBoard(currentPlayer);
+                    Console.WriteLine("\nYou have captured at [{0};{1}] !",
+                        (char)((int)'A' + currentPlayer.currentChoice.coord.Y), currentPlayer.currentChoice.coord.X + 1);
                     currentPlayer.ReadDirection(this);
                 }
-                else if(seedCaptured == 1  && 
-                    this.checkerBoard[currentPlayer.currentChoice.coord.X,currentPlayer.currentChoice.coord.Y]>0
-                    && this.checkerBoard[currentPlayer.currentChoice.coord.X-1,currentPlayer.currentChoice.coord.Y]>0)
+                else if (seedCaptured == 1 &&
+                        this.checkerBoard[currentPlayer.currentChoice.coord.X, currentPlayer.currentChoice.coord.Y] > 0
+                        && this.checkerBoard[currentPlayer.currentChoice.coord.X - 1, currentPlayer.currentChoice.coord.Y] > 0)
                 {
                     currentPlayer.takeAllMySeeds(this);
                     currentPlayer.takeAllOpponentsSeeds(this);
                     showBoard(currentPlayer);
+                    Console.WriteLine("\nYou have captured at [{0};{1}] !",
+                        (char)((int)'A' + currentPlayer.currentChoice.coord.Y), currentPlayer.currentChoice.coord.X + 1);
                     currentPlayer.ReadDirection(this);
 
                 }
                 else
                     currentPlayer.currentChoice.direction = Player.Direction.ClockWise;
 
-                if (currentPlayer.currentChoice.corner == Player.Corner.Left) 
+                if (currentPlayer.currentChoice.corner == Player.Corner.Left)
                 {
-                    if (currentPlayer.currentChoice.direction == Player.Direction.ClockWise) 
+                    if (currentPlayer.currentChoice.direction == Player.Direction.ClockWise)
                     {
                         currentPlayer.currentChoice.coord.X = 3;
                         currentPlayer.currentChoice.coord.Y = 0;
-                    } 
-                    else if (currentPlayer.currentChoice.direction == Player.Direction.CounterClockWise) 
+                    }
+                    else if (currentPlayer.currentChoice.direction == Player.Direction.CounterClockWise)
                     {
                         currentPlayer.currentChoice.coord.X = 2;
                         currentPlayer.currentChoice.coord.Y = 1;
                     }
 
-                } 
-                else if (currentPlayer.currentChoice.corner == Player.Corner.Right) 
+                }
+                else if (currentPlayer.currentChoice.corner == Player.Corner.Right)
                 {
-                    if (currentPlayer.currentChoice.direction == Player.Direction.ClockWise) 
+                    if (currentPlayer.currentChoice.direction == Player.Direction.ClockWise)
                     {
                         currentPlayer.currentChoice.coord.X = 2;
                         currentPlayer.currentChoice.coord.Y = 6;
-                    } 
-                    else if (currentPlayer.currentChoice.direction == Player.Direction.CounterClockWise) 
+                    }
+                    else if (currentPlayer.currentChoice.direction == Player.Direction.CounterClockWise)
                     {
                         currentPlayer.currentChoice.coord.X = 3;
                         currentPlayer.currentChoice.coord.Y = 7;
@@ -267,8 +273,17 @@ namespace Awale_Console
 
                 } 
             }
-            else if (this.hasCaptured == false) 
+            else if (this.hasCaptured == false)
             {
+                if (this.endMoveNonEmpty == true)
+                {
+                    showBoard(currentPlayer);
+                    Console.WriteLine("\nYou have earned a move because your ended in an non empty case !");
+                    Console.WriteLine("\nYou have ended your move at [{0};{1}] !",
+                        (char)((int)'A'+currentPlayer.currentChoice.coord.Y),currentPlayer.currentChoice.coord.X+1);
+                    this.endMoveNonEmpty = false;
+                }
+
                 currentPlayer.ReadDirection(this);
                 currentPlayer.takeAllMySeeds(this);
 
@@ -315,8 +330,9 @@ namespace Awale_Console
 
             if(this.token > 0)
             {
-                
+                this.endMoveNonEmpty = true;
                 this.disseminate(currentPlayer);
+                this.endMoveNonEmpty = false;
             }
 
         }
@@ -426,7 +442,7 @@ namespace Awale_Console
             {
                 do
                 {
-                    Console.WriteLine("\nThis is your nyumba, do you want t0 spread it ? (Y/N)");
+                    Console.WriteLine("\nThis is your nyumba, do you want to spread it ? (Y/N)");
                     keyPressed = Console.ReadKey(false).Key;
                     if (keyPressed == ConsoleKey.Y)
                         value = true;
