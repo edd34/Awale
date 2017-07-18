@@ -23,7 +23,7 @@ namespace Awale_Console
         public PlayerNetwork()
         {
 
-            Console.WriteLine("What is your name ?");
+            Console.WriteLine("\nWhat is your name ?");
             base.name = Console.ReadLine();
             base.isIA = false;
         }
