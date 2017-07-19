@@ -46,12 +46,14 @@ namespace Awale_Console
 
         public void display(Player currentPlayer, GameManager.step state)//main display fonction for each round
         {
+            
             this.showBoard(currentPlayer);
             this.showMiscInfo(state);
         }
 
         public void showBoard(Player currentPlayer)
         {
+            Console.Clear();
             Console.WriteLine();
             Console.WriteLine();
             Console.Write("     A   B   C   D   E   F   G   H");
@@ -216,8 +218,15 @@ namespace Awale_Console
                         break;
                     case Player.Corner.Neither:
                         showBoard(currentPlayer);
+
+
+                        Console.BackgroundColor = ConsoleColor.Red;
+                        Console.ForegroundColor = ConsoleColor.White;
+
+
                         Console.WriteLine("\nYou have captured at [{0};{1}] !",
                             (char)((int)'A' + currentPlayer.currentChoice.coord.Y), currentPlayer.currentChoice.coord.X + 1);
+                        Console.ResetColor();
                         currentPlayer.ReadCorner(this);
                         break;
                 }
@@ -225,8 +234,11 @@ namespace Awale_Console
                 if (seedCaptured > 1)
                 {
                     showBoard(currentPlayer);
+                    Console.BackgroundColor = ConsoleColor.Red;
+                    Console.ForegroundColor = ConsoleColor.White;
                     Console.WriteLine("\nYou have captured at [{0};{1}] !",
                         (char)((int)'A' + currentPlayer.currentChoice.coord.Y), currentPlayer.currentChoice.coord.X + 1);
+                    Console.ResetColor();
                     currentPlayer.ReadDirection(this);
                 }
                 else if (seedCaptured == 1 &&
@@ -236,8 +248,11 @@ namespace Awale_Console
                     currentPlayer.takeAllMySeeds(this);
                     currentPlayer.takeAllOpponentsSeeds(this);
                     showBoard(currentPlayer);
+                    Console.BackgroundColor = ConsoleColor.Red;
+                    Console.ForegroundColor = ConsoleColor.White;
                     Console.WriteLine("\nYou have captured at [{0};{1}] !",
                         (char)((int)'A' + currentPlayer.currentChoice.coord.Y), currentPlayer.currentChoice.coord.X + 1);
+                    Console.ResetColor();
                     currentPlayer.ReadDirection(this);
 
                 }
@@ -278,9 +293,12 @@ namespace Awale_Console
                 if (this.endMoveNonEmpty == true)
                 {
                     showBoard(currentPlayer);
+                    Console.BackgroundColor = ConsoleColor.Red;
+                    Console.ForegroundColor = ConsoleColor.White;
                     Console.WriteLine("\nYou have earned a move because your ended in an non empty case !");
                     Console.WriteLine("\nYou have ended your move at [{0};{1}] !",
                         (char)((int)'A'+currentPlayer.currentChoice.coord.Y),currentPlayer.currentChoice.coord.X+1);
+                    Console.ResetColor();
                     this.endMoveNonEmpty = false;
                 }
 
@@ -442,7 +460,10 @@ namespace Awale_Console
             {
                 do
                 {
+                    Console.BackgroundColor = ConsoleColor.Red;
+                    Console.ForegroundColor = ConsoleColor.White;
                     Console.WriteLine("\nThis is your nyumba, do you want to spread it ? (Y/N)");
+                    Console.ResetColor();
                     keyPressed = Console.ReadKey(false).Key;
                     if (keyPressed == ConsoleKey.Y)
                         value = true;
