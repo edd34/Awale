@@ -230,3 +230,7 @@ FakesAssemblies/
 
 # Visual Studio 6 workspace options file
 *.opt
+
+#personnal git ignore :
+Link*
+Bug*
