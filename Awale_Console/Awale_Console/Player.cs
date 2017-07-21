@@ -10,12 +10,14 @@ namespace Awale_Console
         public bool isIA = false;
         public bool NyumbaSpreaded = false;
 		public string name;
+        public bool canSpreadNyuma;
 
         public Player()
         {
               //Console.WriteLine ("Enter the name for this player");
             this.name = "Unknown"; //Console.ReadLine ();
             this.isIA = false;
+            this.canSpreadNyuma = false;
         }
 
         public Player(string player)
@@ -23,7 +25,8 @@ namespace Awale_Console
             //  Console.WriteLine ("Enter the name for "+player);
             //  name = Console.ReadLine ();
             this.isIA = false;
-            name = player;
+            this.name = player;
+            this.canSpreadNyuma = false;
         }
 
 		//public int[] currentChoice = new int[4];

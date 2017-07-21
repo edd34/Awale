@@ -1,10 +1,9 @@
 ﻿<Properties StartupItem="Awale_Console/Awale_Console.csproj">
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug|x86" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="Awale_Console/PlayerIA.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Awale_Console/Program.cs">
     <Files>
       <File FileName="Awale_Console/Program.cs" Line="1" Column="1" />
-      <File FileName="Awale_Console/Player.cs" Line="97" Column="4" />
-      <File FileName="Awale_Console/Board.cs" Line="56" Column="29" />
+      <File FileName="Awale_Console/Board.cs" Line="466" Column="57" />
       <File FileName="Awale_Console/GameManager.cs" Line="1" Column="1" />
       <File FileName="Awale_Console/StartGame.cs" Line="1" Column="1" />
       <File FileName="Awale_Console/PlayerIA.cs" Line="63" Column="47" />
