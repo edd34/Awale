@@ -42,6 +42,25 @@ namespace Awale_Console
             seed = 44;
         }
 
+        public void initialize_test()//in order to initialize the first round
+        {
+            for (int i = 0; i < 4; i++)
+            {
+                for (int j = 0; j < 8; j++)
+                {
+                    checkerBoard[i, j] = 0;
+                }
+            }
+            checkerBoard[1, 3] = 6;
+            checkerBoard[1, 2] = 2;
+            checkerBoard[1, 1] = 2;
+            checkerBoard[2, 4] = 6;
+            checkerBoard[2, 5] = 2;
+            checkerBoard[2, 6] = 2;
+            checkerBoard[2, 7] = 3;
+            seed = 44;
+        }
+
 
 
         public void display(Player currentPlayer, GameManager.step state)//main display fonction for each round
