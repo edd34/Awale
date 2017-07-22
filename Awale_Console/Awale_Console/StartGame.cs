@@ -21,7 +21,7 @@ namespace Awale_Console
             Player currentPlayer = player_1;
             Player otherPlayer = player_2;
 
-            board.initialize_test ();
+            board.initialize ();
             while (!gameManager.isGameEnd(board,currentPlayer)) 
             {
 

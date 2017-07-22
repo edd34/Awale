@@ -158,7 +158,7 @@ namespace Awale_Console
                 ret = false;
             else if (round == 1 || round == 2)
             {
-                if (currentChoice.coord.X == 2 && currentChoice.coord.Y == 4 ||
+                if ((currentChoice.coord.X == 2 && currentChoice.coord.Y == 4 && !isCapturePossible(currentChoice)) ||
                 this.checkerBoard[currentChoice.coord.X, currentChoice.coord.Y] == 0)
                 {
                     ret = false;
