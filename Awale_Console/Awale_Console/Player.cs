@@ -208,6 +208,20 @@ namespace Awale_Console
             board.checkerBoard [this.currentChoice.coord.X, this.currentChoice.coord.Y] = 0;
 		}
 
+        public virtual void takeNumberMySeeds(Board board)
+        {
+            int ret = 0;
+            ////////////////
+
+
+            /////////////////
+            do {
+                Console.WriteLine ("\nEnter a number of seed between 0 and " + board.checkerBoard[2,5]);
+            } while(Int32.TryParse(Console.ReadLine(),out ret));
+            board.token += ret;
+            board.checkerBoard [2,5] -= ret;
+        }
+
 		public int takeAllOpponentsSeeds(Board board)
 		{
             int seedTaken = 0;
