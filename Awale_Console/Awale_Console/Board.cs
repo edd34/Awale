@@ -56,7 +56,7 @@ namespace Awale_Console
             checkerBoard[1, 1] = 2;
             checkerBoard[2, 4] = 6;
             checkerBoard[2, 5] = 2;
-            checkerBoard[2, 6] = 2;
+            checkerBoard[2, 6] = 1;
             checkerBoard[2, 7] = 3;
             seed = 44;
             this.round = 5;
@@ -361,8 +361,19 @@ namespace Awale_Console
                     this.checkerBoard[currentPlayer.currentChoice.coord.X, currentPlayer.currentChoice.coord.Y]++;
                     if (this.checkerBoard[currentPlayer.currentChoice.coord.X, currentPlayer.currentChoice.coord.Y] > 1)
                     {
-                        //currentPlayer.takeAllMySeeds(this, currentPlayer);
-                        this.capture(currentPlayer);
+                        
+                    if(this.isNyumba(currentPlayer.currentChoice) && !currentPlayer.NyumbaSpreaded && currentPlayer.canSpreadNyumba && !this.isCapturePossible(currentPlayer.currentChoice))
+                        {
+                            currentPlayer.takeNumberMySeeds(this);
+                            currentPlayer.ReadDirection(this);
+                            currentPlayer.NyumbaSpreaded = true;
+                            currentPlayer.canSpreadNyumba = false;
+                        }
+                        else
+                        {
+                            this.capture(currentPlayer);
+                        }
+                            
                     }
                 }
 

@@ -18,7 +18,7 @@ namespace Awale_Console
               //Console.WriteLine ("Enter the name for this player");
             this.name = "Unknown"; //Console.ReadLine ();
             this.isIA = false;
-            this.canSpreadNyumba = false;
+            this.canSpreadNyumba = true;
             triggerSpreadNyumba = false;
         }
 
@@ -28,7 +28,7 @@ namespace Awale_Console
             //  name = Console.ReadLine ();
             this.isIA = false;
             this.name = player;
-            this.canSpreadNyumba = false;
+            this.canSpreadNyumba = true;
             triggerSpreadNyumba = false;
         }
 
@@ -214,15 +214,16 @@ namespace Awale_Console
         public virtual void takeNumberMySeeds(Board board)
         {
             int ret = 0;
-            ////////////////
+            bool valid;
 
 
             /////////////////
             do {
-                Console.WriteLine ("\nEnter a number of seed between 0 and " + board.checkerBoard[2,5]);
-            } while(Int32.TryParse(Console.ReadLine(),out ret));
+                Console.WriteLine ("\nEnter a number of seed between 0 and " + board.checkerBoard[2,4]);
+                valid = Int32.TryParse(Console.ReadLine(),out ret);
+            } while(!valid);
             board.token += ret;
-            board.checkerBoard [2,5] -= ret;
+            board.checkerBoard [2,4] -= ret;
         }
 
 		public int takeAllOpponentsSeeds(Board board)
