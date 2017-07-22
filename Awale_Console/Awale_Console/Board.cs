@@ -59,6 +59,7 @@ namespace Awale_Console
             checkerBoard[2, 6] = 2;
             checkerBoard[2, 7] = 3;
             seed = 44;
+            this.round = 5;
         }
 
 
