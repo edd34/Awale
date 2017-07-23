@@ -51,11 +51,11 @@ namespace Awale_Console
                     checkerBoard[i, j] = 0;
                 }
             }
-            checkerBoard[1, 3] = 6;
-            checkerBoard[1, 2] = 2;
-            checkerBoard[1, 1] = 2;
-            checkerBoard[2, 4] = 6;
-            checkerBoard[2, 5] = 2;
+           
+            checkerBoard[1, 6] = 1;
+            checkerBoard[1, 7] = 1;
+
+
             checkerBoard[2, 6] = 1;
             checkerBoard[2, 7] = 3;
             seed = 44;
