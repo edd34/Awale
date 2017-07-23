@@ -365,7 +365,10 @@ namespace Awale_Console
                     if(this.isNyumba(currentPlayer.currentChoice) && !currentPlayer.NyumbaSpreaded && currentPlayer.canSpreadNyumba && !this.isCapturePossible(currentPlayer.currentChoice))
                         {
                             currentPlayer.takeNumberMySeeds(this);
-                            currentPlayer.ReadDirection(this);
+
+                            if(token>0)
+                                currentPlayer.ReadDirection(this);
+                        
                             currentPlayer.NyumbaSpreaded = true;
                             currentPlayer.canSpreadNyumba = false;
                         }
