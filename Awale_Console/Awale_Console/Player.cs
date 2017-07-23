@@ -215,15 +215,16 @@ namespace Awale_Console
         {
             int ret = 0;
             bool valid;
+            if(board.askToSpreadNyumba(this))
+            {
+                do {
+                    Console.WriteLine ("\nEnter a number of seed between 0 and " + board.checkerBoard[2,4]);
+                    valid = Int32.TryParse(Console.ReadLine(),out ret);
+                } while(!valid);
+                board.token += ret;
+                board.checkerBoard [2,4] -= ret;
+            }
 
-
-            /////////////////
-            do {
-                Console.WriteLine ("\nEnter a number of seed between 0 and " + board.checkerBoard[2,4]);
-                valid = Int32.TryParse(Console.ReadLine(),out ret);
-            } while(!valid);
-            board.token += ret;
-            board.checkerBoard [2,4] -= ret;
         }
 
 		public int takeAllOpponentsSeeds(Board board)
