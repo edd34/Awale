@@ -51,13 +51,16 @@ namespace Awale_Console
                     checkerBoard[i, j] = 0;
                 }
             }
-            checkerBoard[1, 3] = 6;
-            checkerBoard[1, 2] = 2;
-            checkerBoard[1, 1] = 2;
-            checkerBoard[2, 4] = 6;
-            checkerBoard[2, 5] = 2;
+            checkerBoard[1, 3] = 0;
+            checkerBoard[1, 2] = 0;
+            checkerBoard[1, 1] = 0;
+            checkerBoard[2, 4] = 0;
+            checkerBoard[2, 5] = 0;
             checkerBoard[2, 6] = 1;
-            checkerBoard[2, 7] = 3;
+            checkerBoard[2, 7] = 1;
+
+            checkerBoard[1, 6] = 1;
+            checkerBoard[1, 7] = 1;
             seed = 44;
             this.round = 5;
         }
@@ -214,7 +217,11 @@ namespace Awale_Console
                         currentPlayer.takeAllMySeeds ( this);
                         currentPlayer.NyumbaSpreaded = true;
                     }
-                } 
+                }
+                else
+                {
+                    currentPlayer.takeAllMySeeds(this);
+                }
 
 
 
@@ -261,6 +268,12 @@ namespace Awale_Console
                     Console.ResetColor();
                     currentPlayer.ReadDirection(this);
                 }
+                else if(this.token > 0 &&  (this.isCorner(currentPlayer.currentChoice) == Player.Corner.Right) 
+                    || this.isCorner(currentPlayer.currentChoice) == Player.Corner.Left)
+                {
+                    currentPlayer.ReadDirection(this);
+                }
+
                 else if (seedCaptured == 1 &&
                         this.checkerBoard[currentPlayer.currentChoice.coord.X, currentPlayer.currentChoice.coord.Y] > 0
                         && this.checkerBoard[currentPlayer.currentChoice.coord.X - 1, currentPlayer.currentChoice.coord.Y] > 0)
@@ -475,7 +488,7 @@ namespace Awale_Console
                 if (currentChoice.coord.Y == 0 || currentChoice.coord.Y == 1)
                     return Player.Corner.Left;
                 else if (currentChoice.coord.Y == 6 || currentChoice.coord.Y == 7)
-                    return Player.Corner.Left;
+                    return Player.Corner.Right;
                 else
                     return Player.Corner.Neither;
             }
