@@ -17,6 +17,8 @@ namespace Awale_Console
         public bool hasCaptured = false;
         private bool endMoveNonEmpty = false;
 
+		public bool askDirectionEarnedMove = false;
+
 
         public Board()
         {
@@ -51,16 +53,21 @@ namespace Awale_Console
                     checkerBoard[i, j] = 0;
                 }
             }
-            checkerBoard[1, 3] = 0;
-            checkerBoard[1, 2] = 0;
-            checkerBoard[1, 1] = 0;
-            checkerBoard[2, 4] = 6;
-            checkerBoard[2, 5] = 0;
-            checkerBoard[2, 6] = 1;
-            checkerBoard[2, 7] = 0;
 
-            checkerBoard[1, 6] = 2;
-            checkerBoard[1, 7] = 0;
+			checkerBoard[0, 0] = 1;
+			checkerBoard[1, 0] = 2;
+			checkerBoard[1, 2] = 1;
+			checkerBoard[1, 6] = 1;
+
+			checkerBoard[2, 2] = 1;
+			checkerBoard[2, 6] = 1;
+			checkerBoard[2, 7] = 2;
+			checkerBoard[3, 6] = 4;
+
+			checkerBoard[3, 1] = 3;
+
+			seed = 44;
+			this.round = 5;
             seed = 44;
             this.round = 5;
         }
@@ -320,6 +327,9 @@ namespace Awale_Console
                     }
 
                 } 
+
+				askDirectionEarnedMove = true;
+
             }
             else if (this.hasCaptured == false)
             {
@@ -334,8 +344,13 @@ namespace Awale_Console
                     Console.ResetColor();
                     this.endMoveNonEmpty = false;
                 }
-
-                currentPlayer.ReadDirection(this);
+				if(this.askDirectionEarnedMove == false)
+				{
+					//currentPlayer.ReadDirection(this);
+					Console.WriteLine("Hello");
+					this.askDirectionEarnedMove = true;
+				}
+                
                 currentPlayer.takeAllMySeeds(this);
 
             }
