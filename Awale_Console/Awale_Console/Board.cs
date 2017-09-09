@@ -7,6 +7,8 @@ namespace Awale_Console
 {
     public class Board
     {
+        #region variables
+
         public int seed = 64;
         public int[,] checkerBoard = new int[4, 8];
         public bool game_end = false;
@@ -17,8 +19,11 @@ namespace Awale_Console
         public bool hasCaptured = false;
         private bool endMoveNonEmpty = false;
 
-		public bool askDirectionEarnedMove = false;
+        public bool askDirectionEarnedMove = false;
 
+        #endregion
+
+        #region Initialization
 
         public Board()
         {
@@ -54,25 +59,28 @@ namespace Awale_Console
                 }
             }
 
-			checkerBoard[0, 0] = 1;
-			checkerBoard[1, 0] = 2;
-			checkerBoard[1, 2] = 1;
-			checkerBoard[1, 6] = 1;
+            checkerBoard[0, 0] = 1;
+            checkerBoard[1, 0] = 2;
+            checkerBoard[1, 2] = 2;
+            checkerBoard[1, 6] = 1;
 
-			checkerBoard[2, 2] = 1;
-			checkerBoard[2, 6] = 1;
-			checkerBoard[2, 7] = 2;
-			checkerBoard[3, 6] = 4;
+            //checkerBoard[2, 0] = 1;
+            checkerBoard[2, 2] = 1;
+            checkerBoard[2, 6] = 1;
+            checkerBoard[2, 7] = 2;
+            checkerBoard[3, 6] = 4;
 
-			checkerBoard[3, 1] = 3;
+            checkerBoard[3, 1] = 3;
 
-			seed = 44;
-			this.round = 5;
+            seed = 44;
+            this.round = 5;
             seed = 44;
             this.round = 5;
         }
 
+        #endregion
 
+        #region Display fonctions
 
         public void display(Player currentPlayer, GameManager.step state)//main display fonction for each round
         {
@@ -120,23 +128,26 @@ namespace Awale_Console
             Console.WriteLine();
             Console.Write("    Player : " + currentPlayer.name + "  |  Round : " + round);
         }
+
         public void showMiscInfo(GameManager.step state)
         {
             Console.Write("  |  Step : " + state);
             Console.WriteLine();
         }
 
+        #endregion
+
         public override string ToString()
         {
-            string value="";
+            string value = "";
             for (int i = 0; i < 4; i++)
             {
                 for (int j = 0; j < 8; j++)
                 {
-                    if(i == 3 && j == 7)
+                    if (i == 3 && j == 7)
                         value += checkerBoard[i, j].ToString();
                     else
-                        value += checkerBoard[i, j].ToString()+",";
+                        value += checkerBoard[i, j].ToString() + ",";
                 }
             }
 
@@ -154,7 +165,7 @@ namespace Awale_Console
             {
                 for (int j = 0; j < 8; j++)
                 {
-                    Int32.TryParse(tmp[cpt].ToString(),out this.checkerBoard[i, j]);
+                    Int32.TryParse(tmp[cpt].ToString(), out this.checkerBoard[i, j]);
                     cpt++;
                 }
             }
@@ -169,7 +180,7 @@ namespace Awale_Console
             else if (round == 1 || round == 2)
             {
                 if ((currentChoice.coord.X == 2 && currentChoice.coord.Y == 4 && !isCapturePossible(currentChoice)) ||
-                this.checkerBoard[currentChoice.coord.X, currentChoice.coord.Y] == 0)
+                    this.checkerBoard[currentChoice.coord.X, currentChoice.coord.Y] == 0)
                 {
                     ret = false;
                 }
@@ -213,15 +224,15 @@ namespace Awale_Console
             this.hasCaptured = false;
 
 
-            if (this.isCapturePossible (currentPlayer.currentChoice)) 
+            if (this.isCapturePossible(currentPlayer.currentChoice))
             {
-                seedCaptured = currentPlayer.takeAllOpponentsSeeds (this);
+                seedCaptured = currentPlayer.takeAllOpponentsSeeds(this);
 
-                if (this.isNyumba (currentPlayer.currentChoice) && !currentPlayer.NyumbaSpreaded) 
+                if (this.isNyumba(currentPlayer.currentChoice) && !currentPlayer.NyumbaSpreaded)
                 {
-                    if (this.askToSpreadNyumba ( currentPlayer) == true) 
+                    if (this.askToSpreadNyumba(currentPlayer) == true)
                     {
-                        currentPlayer.takeAllMySeeds ( this);
+                        currentPlayer.takeAllMySeeds(this);
                         currentPlayer.NyumbaSpreaded = true;
                     }
                 }
@@ -233,10 +244,10 @@ namespace Awale_Console
 
 
                 this.hasCaptured = true;
-            } 
-            else 
+            }
+            else
             {
-                currentPlayer.takeAllMySeeds (this);
+                currentPlayer.takeAllMySeeds(this);
                 this.hasCaptured = false;
             }
 
@@ -275,15 +286,14 @@ namespace Awale_Console
                     Console.ResetColor();
                     currentPlayer.ReadDirection(this);
                 }
-                else if(this.token > 0 &&  (this.isCorner(currentPlayer.currentChoice) == Player.Corner.Right) 
-                    || this.isCorner(currentPlayer.currentChoice) == Player.Corner.Left)
+                else if (this.token > 0 && (this.isCorner(currentPlayer.currentChoice) == Player.Corner.Right)
+                         || this.isCorner(currentPlayer.currentChoice) == Player.Corner.Left)
                 {
                     currentPlayer.ReadDirection(this);
                 }
-
                 else if (seedCaptured == 1 &&
-                        this.checkerBoard[currentPlayer.currentChoice.coord.X, currentPlayer.currentChoice.coord.Y] > 0
-                        && this.checkerBoard[currentPlayer.currentChoice.coord.X - 1, currentPlayer.currentChoice.coord.Y] > 0)
+                         this.checkerBoard[currentPlayer.currentChoice.coord.X, currentPlayer.currentChoice.coord.Y] > 0
+                         && this.checkerBoard[currentPlayer.currentChoice.coord.X - 1, currentPlayer.currentChoice.coord.Y] > 0)
                 {
                     currentPlayer.takeAllMySeeds(this);
                     currentPlayer.takeAllOpponentsSeeds(this);
@@ -328,7 +338,7 @@ namespace Awale_Console
 
                 } 
 
-				askDirectionEarnedMove = true;
+                askDirectionEarnedMove = true;
 
             }
             else if (this.hasCaptured == false)
@@ -340,16 +350,16 @@ namespace Awale_Console
                     Console.ForegroundColor = ConsoleColor.White;
                     Console.WriteLine("\nYou have earned a move because your ended in an non empty case !");
                     Console.WriteLine("\nYou have ended your move at [{0};{1}] !",
-                        (char)((int)'A'+currentPlayer.currentChoice.coord.Y),currentPlayer.currentChoice.coord.X+1);
+                        (char)((int)'A' + currentPlayer.currentChoice.coord.Y), currentPlayer.currentChoice.coord.X + 1);
                     Console.ResetColor();
                     this.endMoveNonEmpty = false;
                 }
-				if(this.askDirectionEarnedMove == false)
-				{
-					//currentPlayer.ReadDirection(this);
-					Console.WriteLine("Hello");
-					this.askDirectionEarnedMove = true;
-				}
+                if (this.askDirectionEarnedMove == false)
+                {
+                    currentPlayer.ReadDirection(this);
+                    Console.WriteLine("Hello");
+                    this.askDirectionEarnedMove = true;
+                }
                 
                 currentPlayer.takeAllMySeeds(this);
 
@@ -376,40 +386,40 @@ namespace Awale_Console
 
         public void disseminate(Player currentPlayer)
         {
-                if(this.token > 1)
+            if (this.token > 1)
+            {
+                this.nextChoice(currentPlayer);
+                this.token--;
+                this.checkerBoard[currentPlayer.currentChoice.coord.X, currentPlayer.currentChoice.coord.Y]++;
+            }
+            else if (this.token == 1)
+            {
+                this.nextChoice(currentPlayer);
+                this.token--;
+                this.checkerBoard[currentPlayer.currentChoice.coord.X, currentPlayer.currentChoice.coord.Y]++;
+                if (this.checkerBoard[currentPlayer.currentChoice.coord.X, currentPlayer.currentChoice.coord.Y] > 1)
                 {
-                    this.nextChoice(currentPlayer);
-                    this.token--;
-                    this.checkerBoard[currentPlayer.currentChoice.coord.X, currentPlayer.currentChoice.coord.Y]++;
-                }
-               else if(this.token == 1)
-                {
-                    this.nextChoice(currentPlayer);
-                    this.token--;
-                    this.checkerBoard[currentPlayer.currentChoice.coord.X, currentPlayer.currentChoice.coord.Y]++;
-                    if (this.checkerBoard[currentPlayer.currentChoice.coord.X, currentPlayer.currentChoice.coord.Y] > 1)
-                    {
                         
-                    if(this.isNyumba(currentPlayer.currentChoice) && !currentPlayer.NyumbaSpreaded && currentPlayer.canSpreadNyumba && !this.isCapturePossible(currentPlayer.currentChoice))
+                    if (this.isNyumba(currentPlayer.currentChoice) && !currentPlayer.NyumbaSpreaded && currentPlayer.canSpreadNyumba && !this.isCapturePossible(currentPlayer.currentChoice))
+                    {
+                        currentPlayer.takeNumberMySeeds(this);
+                        if (this.token > 0)
                         {
-                            currentPlayer.takeNumberMySeeds(this);
-						if (this.token > 0) 
-						{
-							currentPlayer.ReadDirection(this);
-							currentPlayer.NyumbaSpreaded = true;
-							currentPlayer.canSpreadNyumba = false;
-						}
-                            
-                        }
-                        else
-                        {
-                            this.capture(currentPlayer);
+                            currentPlayer.ReadDirection(this);
+                            currentPlayer.NyumbaSpreaded = true;
+                            currentPlayer.canSpreadNyumba = false;
                         }
                             
                     }
+                    else
+                    {
+                        this.capture(currentPlayer);
+                    }
+                            
                 }
+            }
 
-            if(this.token > 0)
+            if (this.token > 0)
             {
                 this.endMoveNonEmpty = true;
                 this.disseminate(currentPlayer);
@@ -421,62 +431,62 @@ namespace Awale_Console
         public void nextChoice(Player currentPlayer)
         {
             if (currentPlayer.currentChoice.direction == Player.Direction.ClockWise)
+            {
+                if (currentPlayer.currentChoice.coord.X == 2)
                 {
-                    if (currentPlayer.currentChoice.coord.X == 2)
-                    {
 
-                        if (currentPlayer.currentChoice.coord.Y == 7)
-                        {
-                            currentPlayer.currentChoice.coord.X = 3;
-                        }
-                        else
-                        {
-                            currentPlayer.currentChoice.coord.Y++;
-                        }
+                    if (currentPlayer.currentChoice.coord.Y == 7)
+                    {
+                        currentPlayer.currentChoice.coord.X = 3;
                     }
-                    else if (currentPlayer.currentChoice.coord.X == 3)
+                    else
                     {
-
-                        if (currentPlayer.currentChoice.coord.Y == 0)
-                        {   
-                            currentPlayer.currentChoice.coord.X = 2;
-
-                        }
-                        else
-                        {
-                            currentPlayer.currentChoice.coord.Y--;
-                        }
+                        currentPlayer.currentChoice.coord.Y++;
                     }
                 }
+                else if (currentPlayer.currentChoice.coord.X == 3)
+                {
+
+                    if (currentPlayer.currentChoice.coord.Y == 0)
+                    {   
+                        currentPlayer.currentChoice.coord.X = 2;
+
+                    }
+                    else
+                    {
+                        currentPlayer.currentChoice.coord.Y--;
+                    }
+                }
+            }
             else if (currentPlayer.currentChoice.direction == Player.Direction.CounterClockWise)
+            {
+                if (currentPlayer.currentChoice.coord.X == 2)
                 {
-                    if (currentPlayer.currentChoice.coord.X == 2)
-                    {
 
-                        if (currentPlayer.currentChoice.coord.Y == 0)
-                        {
-                            currentPlayer.currentChoice.coord.X = 3;
-                        }
-                        else
-                        {
-                            currentPlayer.currentChoice.coord.Y--;
-                        }
+                    if (currentPlayer.currentChoice.coord.Y == 0)
+                    {
+                        currentPlayer.currentChoice.coord.X = 3;
                     }
-                    else if (currentPlayer.currentChoice.coord.X == 3)
+                    else
                     {
-
-                        if (currentPlayer.currentChoice.coord.Y == 7)
-                        {   
-                            currentPlayer.currentChoice.coord.X = 2;
-                        }
-                        else
-                        {
-                            currentPlayer.currentChoice.coord.Y++;;
-
-                        }
-
+                        currentPlayer.currentChoice.coord.Y--;
                     }
                 }
+                else if (currentPlayer.currentChoice.coord.X == 3)
+                {
+
+                    if (currentPlayer.currentChoice.coord.Y == 7)
+                    {   
+                        currentPlayer.currentChoice.coord.X = 2;
+                    }
+                    else
+                    {
+                        currentPlayer.currentChoice.coord.Y++;
+
+                    }
+
+                }
+            }
 
         }
 
@@ -500,7 +510,7 @@ namespace Awale_Console
             return currentChoice.coord.X == 2 && currentChoice.coord.Y == 4;
         }
 
-        public Player.Corner isCorner(Player.Choice currentChoice) 
+        public Player.Corner isCorner(Player.Choice currentChoice)
         {
             if (currentChoice.coord.X == 2)
             {
