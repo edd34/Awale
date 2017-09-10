@@ -19,7 +19,7 @@ namespace Awale_Console
         public bool hasCaptured = false;
         private bool endMoveNonEmpty = false;
 
-        public bool askDirectionEarnedMove = false;
+        public bool askDirection = false;
 
         #endregion
 
@@ -222,6 +222,7 @@ namespace Awale_Console
         {
             int seedCaptured = 0;
             this.hasCaptured = false;
+            this.askDirection = false;
 
 
             if (this.isCapturePossible(currentPlayer.currentChoice))
@@ -338,7 +339,7 @@ namespace Awale_Console
 
                 } 
 
-                askDirectionEarnedMove = true;
+                askDirection = true;
 
             }
             else if (this.hasCaptured == false)
@@ -354,11 +355,11 @@ namespace Awale_Console
                     Console.ResetColor();
                     this.endMoveNonEmpty = false;
                 }
-                if (this.askDirectionEarnedMove == false || this.hasCaptured == false)
+                if (this.askDirection == true || this.hasCaptured == false)
                 {
                     currentPlayer.ReadDirection(this);
                     Console.WriteLine("Hello");
-                    this.askDirectionEarnedMove = true;
+                    this.askDirection = false;
                 }
                 
                 currentPlayer.takeAllMySeeds(this);
