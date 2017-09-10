@@ -61,7 +61,7 @@ namespace Awale_Console
 
             checkerBoard[0, 0] = 1;
             checkerBoard[1, 0] = 2;
-            checkerBoard[1, 2] = 2;
+            //checkerBoard[1, 2] = 1;
             checkerBoard[1, 6] = 1;
 
             //checkerBoard[2, 0] = 1;
@@ -287,7 +287,7 @@ namespace Awale_Console
                     currentPlayer.ReadDirection(this);
                 }
                 else if (this.token > 0 && (this.isCorner(currentPlayer.currentChoice) == Player.Corner.Right)
-                         || this.isCorner(currentPlayer.currentChoice) == Player.Corner.Left)
+                         || this.isCorner(currentPlayer.currentChoice) == Player.Corner.Left || token > 0)
                 {
                     currentPlayer.ReadDirection(this);
                 }
@@ -354,7 +354,7 @@ namespace Awale_Console
                     Console.ResetColor();
                     this.endMoveNonEmpty = false;
                 }
-                if (this.askDirectionEarnedMove == false)
+                if (this.askDirectionEarnedMove == false || this.hasCaptured == false)
                 {
                     currentPlayer.ReadDirection(this);
                     Console.WriteLine("Hello");

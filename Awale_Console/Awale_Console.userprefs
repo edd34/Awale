@@ -3,9 +3,18 @@
   <MonoDevelop.Ide.Workbench ActiveDocument="Awale_Console/Board.cs">
     <Files>
       <File FileName="Awale_Console/Program.cs" Line="29" Column="27" />
-      <File FileName="Awale_Console/StartGame.cs" Line="17" Column="17" />
-      <File FileName="Awale_Console/Board.cs" Line="69" Column="5" />
+      <File FileName="Awale_Console/StartGame.cs" Line="36" Column="28" />
+      <File FileName="Awale_Console/Board.cs" Line="297" Column="18" />
+      <File FileName="Awale_Console/Player.cs" Line="220" Column="30" />
+      <File FileName="Awale_Console/GameManager.cs" Line="34" Column="1" />
     </Files>
+    <Pads>
+      <Pad Id="MonoDevelop.Debugger.WatchPad">
+        <State>
+          <Value>this.askDirectionEarnedMove</Value>
+        </State>
+      </Pad>
+    </Pads>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>
     <BreakpointStore />
