@@ -1,6 +1,0 @@
-[Desktop Entry]
-Comment=
-Terminal=true
-Name=Awale
-Exec=mono /home/farid/Desktop/Awale_Project/Awale_Console/Awale_Console/bin/Release/Awale_Console.exe
-Type=Application
