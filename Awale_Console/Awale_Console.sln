@@ -3,6 +3,14 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 2012
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Awale_Console", "Awale_Console\Awale_Console.csproj", "{3090D129-116B-4565-9D46-5D75CB80D10C}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BoardLib", "BoardLib\BoardLib.csproj", "{7A90C89A-6AE9-4141-B13E-E14FCEE1E640}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BoardLib_Test", "BoardLib_Test\BoardLib_Test.csproj", "{C7D8DA04-DA35-4C3B-9177-485AF5E3586E}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PlayerLib", "PlayerLib\PlayerLib.csproj", "{398F407D-5DD2-40C8-9BCD-98562FE0958C}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PlayerLib_Test", "PlayerLib_Test\PlayerLib_Test.csproj", "{FB9BF094-44CC-4F67-8CB9-A8FCDCA9C81E}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x86 = Debug|x86
@@ -13,6 +21,22 @@ Global
 		{3090D129-116B-4565-9D46-5D75CB80D10C}.Debug|x86.Build.0 = Debug|x86
 		{3090D129-116B-4565-9D46-5D75CB80D10C}.Release|x86.ActiveCfg = Release|x86
 		{3090D129-116B-4565-9D46-5D75CB80D10C}.Release|x86.Build.0 = Release|x86
+		{398F407D-5DD2-40C8-9BCD-98562FE0958C}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{398F407D-5DD2-40C8-9BCD-98562FE0958C}.Debug|x86.Build.0 = Debug|Any CPU
+		{398F407D-5DD2-40C8-9BCD-98562FE0958C}.Release|x86.ActiveCfg = Release|Any CPU
+		{398F407D-5DD2-40C8-9BCD-98562FE0958C}.Release|x86.Build.0 = Release|Any CPU
+		{7A90C89A-6AE9-4141-B13E-E14FCEE1E640}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{7A90C89A-6AE9-4141-B13E-E14FCEE1E640}.Debug|x86.Build.0 = Debug|Any CPU
+		{7A90C89A-6AE9-4141-B13E-E14FCEE1E640}.Release|x86.ActiveCfg = Release|Any CPU
+		{7A90C89A-6AE9-4141-B13E-E14FCEE1E640}.Release|x86.Build.0 = Release|Any CPU
+		{C7D8DA04-DA35-4C3B-9177-485AF5E3586E}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{C7D8DA04-DA35-4C3B-9177-485AF5E3586E}.Debug|x86.Build.0 = Debug|Any CPU
+		{C7D8DA04-DA35-4C3B-9177-485AF5E3586E}.Release|x86.ActiveCfg = Release|Any CPU
+		{C7D8DA04-DA35-4C3B-9177-485AF5E3586E}.Release|x86.Build.0 = Release|Any CPU
+		{FB9BF094-44CC-4F67-8CB9-A8FCDCA9C81E}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{FB9BF094-44CC-4F67-8CB9-A8FCDCA9C81E}.Debug|x86.Build.0 = Debug|Any CPU
+		{FB9BF094-44CC-4F67-8CB9-A8FCDCA9C81E}.Release|x86.ActiveCfg = Release|Any CPU
+		{FB9BF094-44CC-4F67-8CB9-A8FCDCA9C81E}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(MonoDevelopProperties) = preSolution
 		Policies = $0

@@ -1,7 +1,7 @@
 ﻿using System;
-using System.Diagnostics;
+using System.Dynamic;
 
-namespace Awale_Console
+namespace BoardLib
 {
     public class Board
     {
@@ -83,7 +83,7 @@ namespace Awale_Console
         //these two function shows the board when they are called
         public void display(Player currentPlayer, GameManager.step state)//main display fonction for each round
         {
-            
+
             this.showBoard(currentPlayer);
             this.showMiscInfo(state);
         }
@@ -186,49 +186,30 @@ namespace Awale_Console
          * */
         public bool isPlayable(Player.Choice currentChoice)
         {
-            if (isEmpty(currentChoice))
-                return false;
-            else if (isFirstRound())
+
+            bool ret;
+            if (this.checkerBoard[currentChoice.coord.X, currentChoice.coord.Y] == 0)
+                ret = false;
+            else if (round == 1 || round == 2)
             {
-                if ((isNyumba(currentChoice) && !isCapturePossible(currentChoice)) ||
+                if ((currentChoice.coord.X == 2 && currentChoice.coord.Y == 4 && !isCapturePossible(currentChoice)) ||
                     this.checkerBoard[currentChoice.coord.X, currentChoice.coord.Y] == 0)
                 {
-                    return false;
+                    ret = false;
                 }
                 else
-                    return true;
+                    ret = true;
 
             }
             else
             {
                 if (this.checkerBoard[currentChoice.coord.X, currentChoice.coord.Y] > 0)
-                    return true;
+                    ret = true;
                 else
-                    return true;
+                    ret = false;
             }
+            return ret;
         }
-
-        #region splittingIsplayabeMethod
-
-        public bool isEmpty(Player.Choice currentChoice)
-        {
-            Debug.Assert(this.checkerBoard[currentChoice.coord.X, currentChoice.coord.Y] >= 0);
-            return this.checkerBoard[currentChoice.coord.X, currentChoice.coord.Y] == 0;
-        }
-
-        public bool isNyumba(Player.Choice currentChoice)
-        {
-            Debug.Assert(this.checkerBoard[currentChoice.coord.X, currentChoice.coord.Y] >= 0);
-            return currentChoice.coord.X == 2 && currentChoice.coord.Y == 4;
-        }
-
-        public bool isFirstRound()
-        {
-            Debug.Assert(round >= 0);
-            return round == 1 || round == 2;
-        }
-
-        #endregion
 
         //this function return the board and let the other player play his turn
         public void returnBoard()
@@ -394,15 +375,13 @@ namespace Awale_Console
                     Console.WriteLine("Hello");
                     this.askDirection = false;
                 }
-                
+
                 currentPlayer.takeAllMySeeds(this);
 
             }
         }
 
-        #region splittingCaptureMethod
 
-        #endregion
 
 
 
@@ -422,7 +401,7 @@ namespace Awale_Console
                 this.checkerBoard[currentPlayer.currentChoice.coord.X, currentPlayer.currentChoice.coord.Y]++;
                 if (this.checkerBoard[currentPlayer.currentChoice.coord.X, currentPlayer.currentChoice.coord.Y] > 1)
                 {
-                        
+
                     if (this.isNyumba(currentPlayer.currentChoice) && !currentPlayer.NyumbaSpreaded && currentPlayer.canSpreadNyumba && !this.isCapturePossible(currentPlayer.currentChoice))
                     {
                         currentPlayer.takeNumberMySeeds(this);
@@ -432,13 +411,13 @@ namespace Awale_Console
                             currentPlayer.NyumbaSpreaded = true;
                             currentPlayer.canSpreadNyumba = false;
                         }
-                            
+
                     }
                     else
                     {
                         this.capture(currentPlayer);
                     }
-                            
+
                 }
             }
 
@@ -451,7 +430,7 @@ namespace Awale_Console
 
         }
 
-       
+
 
 
 
@@ -549,7 +528,10 @@ namespace Awale_Console
             }
         }
 
-
+        public bool isNyumba(Player.Choice currentChoice)
+        {
+            return currentChoice.coord.X == 2 && currentChoice.coord.Y == 4;
+        }
 
         public Player.Corner isCorner(Player.Choice currentChoice)
         {
@@ -596,97 +578,3 @@ namespace Awale_Console
 
     }
 }
-
-/*      public void capture_disseminate(Player currentPlayer, Board board)
-        {
-            this.hasCaptured = false;
-            if (board.isCapturePossible (currentPlayer.currentChoice)) 
-            {
-                currentPlayer.takeAllOpponentsSeeds (board, currentPlayer.currentChoice);
-
-                if (board.isNyumba (currentPlayer.currentChoice)) 
-                {
-                    if (board.askToSpreadNyumba (board, currentPlayer) == true) 
-                    {
-                        currentPlayer.takeAllMySeeds (board, currentPlayer);
-                    }
-                } 
-
-
-
-                board.hasCaptured = true;
-            } 
-            else 
-            {
-                currentPlayer.takeAllMySeeds (board, currentPlayer);
-                board.hasCaptured = false;
-            }
-
-            if (board.hasCaptured == true) 
-            {   
-                currentPlayer.ReadCorner (board);
-                currentPlayer.ReadDirection(board);
-                if (currentPlayer.currentChoice.corner == Player.Corner.Left) 
-                {
-                    if (currentPlayer.currentChoice.direction == Player.Direction.ClockWise) 
-                    {
-                        currentPlayer.currentChoice.coord.X = 3;
-                        currentPlayer.currentChoice.coord.Y = 0;
-                    } 
-                    else if (currentPlayer.currentChoice.direction == Player.Direction.CounterClockWise) 
-                    {
-                        currentPlayer.currentChoice.coord.X = 2;
-                        currentPlayer.currentChoice.coord.Y = 1;
-                    }
-
-                } 
-                else if (currentPlayer.currentChoice.corner == Player.Corner.Right) 
-                {
-                    if (currentPlayer.currentChoice.direction == Player.Direction.ClockWise) 
-                    {
-                        currentPlayer.currentChoice.coord.X = 2;
-                        currentPlayer.currentChoice.coord.Y = 6;
-                    } 
-                    else if (currentPlayer.currentChoice.direction == Player.Direction.CounterClockWise) 
-                    {
-                        currentPlayer.currentChoice.coord.X = 3;
-                        currentPlayer.currentChoice.coord.Y = 7;
-                    }
-
-                } 
-            }
-            else if (board.hasCaptured == false) 
-            {
-               
-            }
-        }*/
-
-
-/*
-else 
-{
-    if (board.isNyumba(currentPlayer.currentChoice) && currentPlayer.NyumbaSpreaded == false)
-        /* do
-                    {
-                        Console.WriteLine("How many seed do you want to spread ?");
-                        try
-                        {
-                            read = Convert.ToInt32(Console.ReadLine());
-
-                            if (read > 0
-                            && read <= this.checkerBoard[currentPlayer.currentChoice.coord.X, currentPlayer.currentChoice.coord.Y])
-                                isEntryOk = true;
-                            else
-                                isEntryOk = false;
-                        }
-                        catch
-                        {
-                            isEntryOk = false;
-                        }
-                    } while(!isEntryOk);
-                
-        currentPlayer.takeAllMySeeds (board, currentPlayer);
-    board.hasCaptured = false;
-
-}
-*/

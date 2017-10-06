@@ -100,7 +100,6 @@ namespace Awale_Console
             //Player player_1 = new Player ("Player 1");
             PlayerNetwork player_1 = new PlayerNetwork();
             byte[] ba = new byte[10000];
-            int k;
             string rcpt = " ";
             board.initialize();
             player_1.initConnection();
@@ -136,7 +135,6 @@ namespace Awale_Console
                 else if (player_1.Host == false)
                 {
                     ba = new byte[1000];
-                    k = player_1.stm.Read(ba, 0, ba.Length);
                     rcpt = System.Text.Encoding.UTF8.GetString(ba).Trim();
                     ;
                     board.ToBoard(rcpt);

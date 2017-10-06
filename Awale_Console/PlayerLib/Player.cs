@@ -1,9 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 
-namespace Awale_Console
+namespace PlayerLib
 {
     public class Player
     {
@@ -65,7 +62,7 @@ namespace Awale_Console
             public Direction direction;
             public Corner corner;
 
-           
+
             public bool valid;
 
             public bool isPossibleToCaptureSomewhere(Board board)
@@ -81,7 +78,7 @@ namespace Awale_Console
 
             public bool isCoordValid(Board board)
             {
-                
+
 
 
                 if (board.checkerBoard[this.coord.X, this.coord.Y] == 0)
@@ -103,14 +100,14 @@ namespace Awale_Console
 
         }
 
-		
+
         #region reading input
 
         public virtual void ReadCorner(Board board)
         {
             board.previousMove = "";
             ConsoleKey keyPressed = ConsoleKey.Spacebar;
-			
+
             do
             {
                 this.currentChoice.valid = false;
@@ -129,7 +126,7 @@ namespace Awale_Console
                 else
                     this.currentChoice.valid = false;
             } while(!this.currentChoice.valid);
-			
+
             board.previousMove += " corner = " + this.currentChoice.corner;
 
         }
@@ -140,7 +137,7 @@ namespace Awale_Console
             bool isPossibleToCaptureSomeWhere = false;
             board.previousMove = "";
             char charPressed = '0';
-			
+
             do
             {
                 do
@@ -165,7 +162,7 @@ namespace Awale_Console
 
                 } while(!this.currentChoice.valid);
                 board.previousMove += " " + charPressed;
-    			
+
                 do
                 {
                     this.currentChoice.valid = false;
