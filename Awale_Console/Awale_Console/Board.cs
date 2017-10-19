@@ -1,12 +1,14 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+using Data_Struct;
+using System.Diagnostics;
+using System.Runtime.InteropServices;
 
 namespace Awale_Console
 {
     public class Board
     {
+        #region variables
+
         public int seed = 64;
         public int[,] checkerBoard = new int[4, 8];
         public bool game_end = false;
@@ -17,8 +19,9 @@ namespace Awale_Console
         public bool hasCaptured = false;
         private bool endMoveNonEmpty = false;
 
-		public bool askDirectionEarnedMove = false;
+        public bool askDirection = false;
 
+        #endregion
 
         public Board()
         {
@@ -26,7 +29,7 @@ namespace Awale_Console
             game_end = false;
         }
 
-        public void initialize()//in order to initialize the first round
+        public void initialize(int[,] checkerBoard, int seed, int round, int currentPlayer)//in order to initialize the first round
         {
             for (int i = 0; i < 4; i++)
             {
@@ -42,9 +45,12 @@ namespace Awale_Console
             checkerBoard[2, 5] = 2;
             checkerBoard[2, 6] = 2;
             seed = 44;
+            round = 1;
+            currentPlayer = 1;
+            Debug.Assert(seed == 44);
         }
 
-        public void initialize_test()//in order to initialize the first round
+        public void initialize_test(int[,] checkerBoard, int seed)//in order to initialize the first round
         {
             for (int i = 0; i < 4; i++)
             {
@@ -54,35 +60,39 @@ namespace Awale_Console
                 }
             }
 
-			checkerBoard[0, 0] = 1;
-			checkerBoard[1, 0] = 2;
-			checkerBoard[1, 2] = 1;
-			checkerBoard[1, 6] = 1;
+            checkerBoard[0, 0] = 1;
+            checkerBoard[1, 0] = 2;
+            //checkerBoard[1, 2] = 1;
+            checkerBoard[1, 6] = 1;
 
-			checkerBoard[2, 2] = 1;
-			checkerBoard[2, 6] = 1;
-			checkerBoard[2, 7] = 2;
-			checkerBoard[3, 6] = 4;
+            //checkerBoard[2, 0] = 1;
+            checkerBoard[2, 2] = 1;
+            checkerBoard[2, 6] = 1;
+            checkerBoard[2, 7] = 2;
+            checkerBoard[3, 6] = 4;
 
-			checkerBoard[3, 1] = 3;
+            checkerBoard[3, 1] = 3;
 
-			seed = 44;
-			this.round = 5;
+            seed = 44;
+            this.round = 5;
             seed = 44;
             this.round = 5;
         }
 
 
 
-        public void display(Player currentPlayer, GameManager.step state)//main display fonction for each round
+        //these two function shows the board when they are called
+        public void display(string currentPlayerName, step state)//main display fonction for each round
         {
-            
-            this.showBoard(currentPlayer);
+            this.showBoard(currentPlayerName, round, seed, this.checkerBoard);
             this.showMiscInfo(state);
         }
 
-        public void showBoard(Player currentPlayer)
+        public void showBoard(string currentPlayerName, int round, int seed, int[,] checkerBoard)
         {
+            Debug.Assert((checkerBoard.GetLength(1) == 4));
+            Debug.Assert((checkerBoard.GetLength(2) == 8));
+
             Console.Clear();
             Console.WriteLine();
             Console.WriteLine();
@@ -99,7 +109,7 @@ namespace Awale_Console
                     else if (j == 9)
                         Console.Write("| " + (i + 1));
                     else
-                        Console.Write(this.checkerBoard[i, j - 1].ToString("##00") + "  ");
+                        Console.Write(checkerBoard[i, j - 1].ToString("##00") + "  ");
 
                 }
                 if (i == 1)
@@ -118,111 +128,177 @@ namespace Awale_Console
             Console.Write("     A   B   C   D   E   F   G   H");
             Console.WriteLine();
             Console.WriteLine();
-            Console.Write("    Player : " + currentPlayer.name + "  |  Round : " + round);
+            Console.Write("    Player : " + currentPlayerName + "  |  Round : " + round);
         }
-        public void showMiscInfo(GameManager.step state)
+
+        public void showMiscInfo(step state)
         {
-            Console.Write("  |  Step : " + state);
+            Console.Write("  |  Step : " + state.ToString());
             Console.WriteLine();
         }
 
-        public override string ToString()
-        {
-            string value="";
-            for (int i = 0; i < 4; i++)
-            {
-                for (int j = 0; j < 8; j++)
-                {
-                    if(i == 3 && j == 7)
-                        value += checkerBoard[i, j].ToString();
-                    else
-                        value += checkerBoard[i, j].ToString()+",";
-                }
-            }
 
-            Console.WriteLine(value);
-            return value;
+        public void takeAllMySeeds(int[,] checkerBoard, int token, Coord currentCoord)
+        {
+            token = checkerBoard[currentCoord.X, currentCoord.Y];
+            checkerBoard[currentCoord.X, currentCoord.Y] = 0;
         }
 
-        public void ToBoard(string s)
+        public virtual void takeNumberMySeeds(int[,] checkerboard, int token, Coord currentChoice)
         {
-            int cpt = 0;
-            //int count = 1000;
-            string[] tmp = new string[10000];
-            tmp = s.Split(',');
-            for (int i = 0; i < 4; i++)
+            int ret = 0;
+            bool valid;
+
+            do
             {
-                for (int j = 0; j < 8; j++)
-                {
-                    Int32.TryParse(tmp[cpt].ToString(),out this.checkerBoard[i, j]);
-                    cpt++;
-                }
-            }
+                Console.WriteLine("\nEnter a number of seed between 0 and " + checkerBoard[2, 4]);
+                valid = Int32.TryParse(Console.ReadLine(), out ret);
+            } while(!valid);
+            token = ret;
+            checkerBoard[2, 4] -= ret;
         }
 
-        public bool isPlayable(Player.Choice currentChoice)
+        public void takeAllOpponentsSeeds(int[,] checkerBoard, Coord currentCoord, int token)
         {
+            int seedTaken = 0;
+            Debug.Assert(currentCoord.X == 2);
 
-            bool ret;
-            if (this.checkerBoard[currentChoice.coord.X, currentChoice.coord.Y] == 0)
-                ret = false;
-            else if (round == 1 || round == 2)
+            seedTaken = checkerBoard[1, currentCoord.Y];
+            checkerBoard[1, currentCoord.Y] = 0;
+            token = seedTaken;
+        }
+
+
+        //This function return true if a move is playable
+
+        /*
+         a move is not playable if : 
+            you want to play the nyumba during your first move (position 2;4 and round 1 or 2
+            you want to place a seed in an empty hole
+         
+         * */
+        public bool isPlayable(int[,] checkerBoard, Coord currentCoord, int round)
+        {
+            if (isEmpty(checkerBoard, currentCoord))
             {
-                if ((currentChoice.coord.X == 2 && currentChoice.coord.Y == 4 && !isCapturePossible(currentChoice)) ||
-                this.checkerBoard[currentChoice.coord.X, currentChoice.coord.Y] == 0)
-                {
-                    ret = false;
-                }
+                return false;    
+            }
+            else if (isFirstRound(round))
+            {
+                if (isNyumba(checkerBoard, currentCoord) && !isCapturePossible(checkerBoard, currentCoord) ||
+                    checkerBoard[currentCoord.X, currentCoord.Y] == 0)
+                    return false;
                 else
-                    ret = true;
+                {
+                    return true;
+                }
+               
+
+
+
 
             }
             else
             {
-                if (this.checkerBoard[currentChoice.coord.X, currentChoice.coord.Y] > 0)
-                    ret = true;
+                if (checkerBoard[currentCoord.X, currentCoord.Y] > 0)
+                    return true;
                 else
-                    ret = false;
+                    return true;
             }
-            return ret;
         }
 
-        public void returnBoard()
+
+        public bool isEmpty(int[,] checkerBoard, Coord currentCoord)
+        {
+            Debug.Assert(checkerBoard[currentCoord.X, currentCoord.Y] >= 0);
+            return checkerBoard[currentCoord.X, currentCoord.Y] == 0;
+        }
+
+        public bool isNyumba(int[,] checkerBoard, Coord currentCoord)
+        {
+            Debug.Assert(checkerBoard[currentCoord.X, currentCoord.Y] >= 0);
+            return currentCoord.X == 2 && currentCoord.Y == 4;
+        }
+
+        public bool isFirstRound(int round)
+        {
+            Debug.Assert(round >= 0);
+            return (round == 1 || round == 2);
+        }
+
+
+
+        //this function return the board and let the other player play his turn
+        public void returnBoard(int[,] checkerBoard)
         {
             int[,] Board2 = new int[4, 8];
             for (int i = 0; i < 4; i++)
             {
                 for (int j = 0; j < 8; j++)
                 {
-                    Board2[3 - i, 7 - j] = this.checkerBoard[i, j];
+                    Board2[3 - i, 7 - j] = checkerBoard[i, j];
                 }
             }
 
-            for (int i = 0; i < 4; i++)
-            {
-                for (int j = 0; j < 8; j++)
-                {
-                    this.checkerBoard[i, j] = Board2[i, j];
-                }
-            }
+            checkerBoard = Board2;
         }
 
+        public void placeSeed(int[,] checkerBoard, int seed, Coord CurrentCoord, int token)
+        {
+            
+        }
+
+        public bool isPossibleToCaptureSomewhere(int[,] checkerBoard)
+        {
+            for (int i = 0; i < 8; i++)
+            {
+                if (checkerBoard[2, i] > 0 && checkerBoard[1, i] > 0)
+                    return true;
+            }
+            return false;
+        }
+
+
+        public bool isCoordValid(int[,] checkerBoard, int round, Coord currentCoord)
+        {
+
+
+
+            if (checkerBoard[currentCoord.X, currentCoord.Y] == 0)
+            {
+                return false;
+            }
+            else if (currentCoord.X == 0 || currentCoord.X == 1)
+            {
+                return false;
+            }
+            else if (round <= 2 && isNyumba(checkerBoard, currentCoord) && !isCapturePossible(checkerBoard, currentCoord))
+            {
+                return false; 
+            }
+            else
+                return true;
+        }
+
+
+        /*
         public void capture(Player currentPlayer)
         {
             int seedCaptured = 0;
             this.hasCaptured = false;
+            this.askDirection = false;
 
 
-            if (this.isCapturePossible (currentPlayer.currentChoice)) 
+            if (this.isCapturePossible(currentPlayer.currentChoice))
             {
-                seedCaptured = currentPlayer.takeAllOpponentsSeeds (this);
+                seedCaptured = currentPlayer.takeAllOpponentsSeeds(this);
 
-                if (this.isNyumba (currentPlayer.currentChoice) && !currentPlayer.NyumbaSpreaded) 
+                if (this.isNyumba(currentPlayer.currentChoice) && !currentPlayer.isNyumbaSpreaded)
                 {
-                    if (this.askToSpreadNyumba ( currentPlayer) == true) 
+                    if (this.askToSpreadNyumba(currentPlayer) == true)
                     {
-                        currentPlayer.takeAllMySeeds ( this);
-                        currentPlayer.NyumbaSpreaded = true;
+                        currentPlayer.takeAllMySeeds(this);
+                        currentPlayer.isNyumbaSpreaded = true;
                     }
                 }
                 else
@@ -233,10 +309,10 @@ namespace Awale_Console
 
 
                 this.hasCaptured = true;
-            } 
-            else 
+            }
+            else
             {
-                currentPlayer.takeAllMySeeds (this);
+                currentPlayer.takeAllMySeeds(this);
                 this.hasCaptured = false;
             }
 
@@ -250,8 +326,8 @@ namespace Awale_Console
                     case Player.Corner.Right:
                         currentPlayer.currentChoice.corner = Player.Corner.Right;
                         break;
-                    case Player.Corner.Neither:
-                        showBoard(currentPlayer);
+                    case Player.Corner.NotCorner:
+                        showBoard(currentPlayer.name, round, seed, checkerBoard);
 
 
                         Console.BackgroundColor = ConsoleColor.Red;
@@ -267,7 +343,7 @@ namespace Awale_Console
 
                 if (seedCaptured > 1)
                 {
-                    showBoard(currentPlayer);
+                    showBoard(currentPlayer.name, round, seed, checkerBoard);
                     Console.BackgroundColor = ConsoleColor.Red;
                     Console.ForegroundColor = ConsoleColor.White;
                     Console.WriteLine("\nYou have captured at [{0};{1}] !",
@@ -275,19 +351,18 @@ namespace Awale_Console
                     Console.ResetColor();
                     currentPlayer.ReadDirection(this);
                 }
-                else if(this.token > 0 &&  (this.isCorner(currentPlayer.currentChoice) == Player.Corner.Right) 
-                    || this.isCorner(currentPlayer.currentChoice) == Player.Corner.Left)
+                else if (this.token > 0 && (this.isCorner(currentPlayer.currentChoice) == Player.Corner.Right)
+                         || this.isCorner(currentPlayer.currentChoice) == Player.Corner.Left || token > 0)
                 {
                     currentPlayer.ReadDirection(this);
                 }
-
                 else if (seedCaptured == 1 &&
-                        this.checkerBoard[currentPlayer.currentChoice.coord.X, currentPlayer.currentChoice.coord.Y] > 0
-                        && this.checkerBoard[currentPlayer.currentChoice.coord.X - 1, currentPlayer.currentChoice.coord.Y] > 0)
+                         this.checkerBoard[currentPlayer.currentChoice.coord.X, currentPlayer.currentChoice.coord.Y] > 0
+                         && this.checkerBoard[currentPlayer.currentChoice.coord.X - 1, currentPlayer.currentChoice.coord.Y] > 0)
                 {
                     currentPlayer.takeAllMySeeds(this);
                     currentPlayer.takeAllOpponentsSeeds(this);
-                    showBoard(currentPlayer);
+                    showBoard(currentPlayer.name, round, seed, checkerBoard);
                     Console.BackgroundColor = ConsoleColor.Red;
                     Console.ForegroundColor = ConsoleColor.White;
                     Console.WriteLine("\nYou have captured at [{0};{1}] !",
@@ -328,41 +403,91 @@ namespace Awale_Console
 
                 } 
 
-				askDirectionEarnedMove = true;
+                askDirection = true;
 
             }
             else if (this.hasCaptured == false)
             {
                 if (this.endMoveNonEmpty == true)
                 {
-                    showBoard(currentPlayer);
+                    showBoard(currentPlayer.name, round, seed, checkerBoard);
                     Console.BackgroundColor = ConsoleColor.Red;
                     Console.ForegroundColor = ConsoleColor.White;
                     Console.WriteLine("\nYou have earned a move because your ended in an non empty case !");
                     Console.WriteLine("\nYou have ended your move at [{0};{1}] !",
-                        (char)((int)'A'+currentPlayer.currentChoice.coord.Y),currentPlayer.currentChoice.coord.X+1);
+                        (char)((int)'A' + currentPlayer.currentChoice.coord.Y), currentPlayer.currentChoice.coord.X + 1);
                     Console.ResetColor();
                     this.endMoveNonEmpty = false;
                 }
-				if(this.askDirectionEarnedMove == false)
-				{
-					//currentPlayer.ReadDirection(this);
-					Console.WriteLine("Hello");
-					this.askDirectionEarnedMove = true;
-				}
+                if (this.askDirection == true || this.hasCaptured == false)
+                {
+                    currentPlayer.ReadDirection(this);
+                    Console.WriteLine("Hello");
+                    this.askDirection = false;
+                }
                 
                 currentPlayer.takeAllMySeeds(this);
 
             }
         }
+*/
 
- 
 
-        public bool isCapturePossible(Player.Choice currentChoice)
+
+
+        /*
+        public void disseminate(Player currentPlayer)
         {
-            if (currentChoice.coord.X == 2)
+            if (this.token > 1)
             {
-                if (this.checkerBoard[currentChoice.coord.X - 1, currentChoice.coord.Y] > 0)
+                this.nextChoice(currentPlayer);
+                this.token--;
+                this.checkerBoard[currentPlayer.currentChoice.coord.X, currentPlayer.currentChoice.coord.Y]++;
+            }
+            else if (this.token == 1)
+            {
+                this.nextChoice(currentPlayer);
+                this.token--;
+                this.checkerBoard[currentPlayer.currentChoice.coord.X, currentPlayer.currentChoice.coord.Y]++;
+                if (this.checkerBoard[currentPlayer.currentChoice.coord.X, currentPlayer.currentChoice.coord.Y] > 1)
+                {
+                        
+                    if (this.isNyumba(currentPlayer.currentChoice) && !currentPlayer.isNyumbaSpreaded && currentPlayer.canSpreadNyumba && !this.isCapturePossible(currentPlayer.currentChoice))
+                    {
+                        currentPlayer.takeNumberMySeeds(this);
+                        if (this.token > 0)
+                        {
+                            currentPlayer.ReadDirection(this);
+                            currentPlayer.isNyumbaSpreaded = true;
+                            currentPlayer.canSpreadNyumba = false;
+                        }
+                            
+                    }
+                    else
+                    {
+                        this.capture(currentPlayer);
+                    }
+                            
+                }
+            }
+
+            if (this.token > 0)
+            {
+                this.endMoveNonEmpty = true;
+                this.disseminate(currentPlayer);
+                this.endMoveNonEmpty = false;
+            }
+
+        }
+*/
+
+
+               
+        public bool isCapturePossible(int[,] checkerBoard, Coord currentCoord)
+        {
+            if (currentCoord.X == 2)
+            {
+                if (checkerBoard[currentCoord.X - 1, currentCoord.Y] > 0)
                 {
                     return true;
                 }
@@ -373,146 +498,90 @@ namespace Awale_Console
                 return false;
         }
 
-
-        public void disseminate(Player currentPlayer)
+        public void nextChoice(Coord currentCoord, Direction currentDirection)
         {
-                if(this.token > 1)
+            if (currentDirection == Direction.ClockWise)
+            {
+                if (currentCoord.X == 2)
                 {
-                    this.nextChoice(currentPlayer);
-                    this.token--;
-                    this.checkerBoard[currentPlayer.currentChoice.coord.X, currentPlayer.currentChoice.coord.Y]++;
-                }
-               else if(this.token == 1)
-                {
-                    this.nextChoice(currentPlayer);
-                    this.token--;
-                    this.checkerBoard[currentPlayer.currentChoice.coord.X, currentPlayer.currentChoice.coord.Y]++;
-                    if (this.checkerBoard[currentPlayer.currentChoice.coord.X, currentPlayer.currentChoice.coord.Y] > 1)
+
+                    if (currentCoord.Y == 7)
                     {
-                        
-                    if(this.isNyumba(currentPlayer.currentChoice) && !currentPlayer.NyumbaSpreaded && currentPlayer.canSpreadNyumba && !this.isCapturePossible(currentPlayer.currentChoice))
-                        {
-                            currentPlayer.takeNumberMySeeds(this);
-						if (this.token > 0) 
-						{
-							currentPlayer.ReadDirection(this);
-							currentPlayer.NyumbaSpreaded = true;
-							currentPlayer.canSpreadNyumba = false;
-						}
-                            
-                        }
-                        else
-                        {
-                            this.capture(currentPlayer);
-                        }
-                            
+                        currentCoord.X = 3;
+                    }
+                    else
+                    {
+                        currentCoord.Y++;
                     }
                 }
+                else if (currentCoord.X == 3)
+                {
 
-            if(this.token > 0)
+                    if (currentCoord.Y == 0)
+                    {   
+                        currentCoord.X = 2;
+
+                    }
+                    else
+                    {
+                        currentCoord.Y--;
+                    }
+                }
+            }
+            else if (currentDirection == Direction.CounterClockWise)
             {
-                this.endMoveNonEmpty = true;
-                this.disseminate(currentPlayer);
-                this.endMoveNonEmpty = false;
+                if (currentCoord.X == 2)
+                {
+
+                    if (currentCoord.Y == 0)
+                    {
+                        currentCoord.X = 3;
+                    }
+                    else
+                    {
+                        currentCoord.Y--;
+                    }
+                }
+                else if (currentCoord.X == 3)
+                {
+
+                    if (currentCoord.Y == 7)
+                    {   
+                        currentCoord.X = 2;
+                    }
+                    else
+                    {
+                        currentCoord.Y++;
+
+                    }
+
+                }
             }
 
         }
 
-        public void nextChoice(Player currentPlayer)
+        public void placeSeed(Coord currentCoord)
         {
-            if (currentPlayer.currentChoice.direction == Player.Direction.ClockWise)
-                {
-                    if (currentPlayer.currentChoice.coord.X == 2)
-                    {
-
-                        if (currentPlayer.currentChoice.coord.Y == 7)
-                        {
-                            currentPlayer.currentChoice.coord.X = 3;
-                        }
-                        else
-                        {
-                            currentPlayer.currentChoice.coord.Y++;
-                        }
-                    }
-                    else if (currentPlayer.currentChoice.coord.X == 3)
-                    {
-
-                        if (currentPlayer.currentChoice.coord.Y == 0)
-                        {   
-                            currentPlayer.currentChoice.coord.X = 2;
-
-                        }
-                        else
-                        {
-                            currentPlayer.currentChoice.coord.Y--;
-                        }
-                    }
-                }
-            else if (currentPlayer.currentChoice.direction == Player.Direction.CounterClockWise)
-                {
-                    if (currentPlayer.currentChoice.coord.X == 2)
-                    {
-
-                        if (currentPlayer.currentChoice.coord.Y == 0)
-                        {
-                            currentPlayer.currentChoice.coord.X = 3;
-                        }
-                        else
-                        {
-                            currentPlayer.currentChoice.coord.Y--;
-                        }
-                    }
-                    else if (currentPlayer.currentChoice.coord.X == 3)
-                    {
-
-                        if (currentPlayer.currentChoice.coord.Y == 7)
-                        {   
-                            currentPlayer.currentChoice.coord.X = 2;
-                        }
-                        else
-                        {
-                            currentPlayer.currentChoice.coord.Y++;;
-
-                        }
-
-                    }
-                }
-
+          
+            seed--;
+            checkerBoard[currentCoord.X, currentCoord.Y]++;
+            
         }
 
 
-
-        public void move(GameManager gameManager, Player.Choice currentChoice)
+        public Corner isCorner(Coord currentCoord)
         {
-            if (gameManager.state == GameManager.step.UMUNIA)
+            if (currentCoord.X == 2)
             {
-                this.seed--;
-                this.checkerBoard[currentChoice.coord.X, currentChoice.coord.Y]++;
-            }
-            else
-            {
-
-            }
-        }
-
-        public bool isNyumba(Player.Choice currentChoice)
-        {
-            return currentChoice.coord.X == 2 && currentChoice.coord.Y == 4;
-        }
-
-        public Player.Corner isCorner(Player.Choice currentChoice) 
-        {
-            if (currentChoice.coord.X == 2)
-            {
-                if (currentChoice.coord.Y == 0 || currentChoice.coord.Y == 1)
-                    return Player.Corner.Left;
-                else if (currentChoice.coord.Y == 6 || currentChoice.coord.Y == 7)
-                    return Player.Corner.Right;
+                if (currentCoord.Y == 0 || currentCoord.Y == 1)
+                    return Corner.Left;
+                else if (currentCoord.Y == 6 || currentCoord.Y == 7)
+                    return Corner.Right;
                 else
-                    return Player.Corner.Neither;
+                    return Corner.NotCorner;
             }
             else
-                return Player.Corner.Neither;
+                return Corner.NotCorner;
         }
 
         public bool askToSpreadNyumba(Player currentPlayer)
